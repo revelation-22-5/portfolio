@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>임재훈 — Mechanical Design Portfolio</title>
+
+<!-- 폰트 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+
+<!-- KaTeX (수식) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+
+<style>
+/* ============================================================
+   DESIGN TOKENS — 색은 이 5개만 사용 (선생님 지정 팔레트)
+   ============================================================ */
+:root{
+  --bg:      #F5F4F0;
+  --txt:     #1A1A1A;
+  --sub:     #6B6B6B;
+  --accent:  #2B4C7E;
+  --line:    #E5E3DD;
+
+  --font-body:'Pretendard Variable',Pretendard,-apple-system,sans-serif;
+  --font-disp:'Pretendard Variable',Pretendard,sans-serif;
+  --font-mono:'Pretendard Variable',Pretendard,sans-serif;
+
+  --sidebar-w: 240px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:auto}
+body{
+  background:var(--bg);color:var(--txt);
+  font-family:var(--font-body);
+  -webkit-font-smoothing:antialiased;
+  line-height:1.6;
+  font-variant-numeric:tabular-nums; /* 카운트업 숫자 흔들림 방지 */
+}
+::selection{background:var(--accent);color:var(--bg)}
+
+/* ============================================================
+   좌측 고정 사이드바 (스크롤 스파이)
+   ============================================================ */
+nav.side{
+  position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);
+  padding:44px 32px;border-right:1px solid var(--line);
+  display:flex;flex-direction:column;z-index:100;background:var(--bg);
+}
+.side .who{margin-bottom:52px}
+.side .who .nm{font-family:var(--font-disp);font-weight:800;font-size:20px;letter-spacing:-.01em}
+.side .who .rl{font-family:var(--font-mono);font-size:10.5px;color:var(--sub);letter-spacing:.14em;margin-top:4px}
+.side ol{list-style:none;display:flex;flex-direction:column;gap:2px}
+.side ol a{
+  display:flex;align-items:baseline;gap:10px;text-decoration:none;
+  padding:7px 10px;border-radius:6px;transition:.25s;
+}
+.side ol a .no{font-family:var(--font-mono);font-size:10px;color:var(--sub);width:18px}
+.side ol a .tt{font-size:13px;color:var(--sub);font-weight:500;transition:.25s}
+.side ol a:hover .tt{color:var(--txt)}
+.side ol a.on{background:#fff}
+.side ol a.on .tt{color:var(--accent);font-weight:700}
+.side ol a.on .no{color:var(--accent)}
+.side .foot{margin-top:auto;font-family:var(--font-mono);font-size:10px;color:var(--sub);letter-spacing:.06em;line-height:1.8}
+
+/* ============================================================
+   메인 영역
+   ============================================================ */
+main{margin-left:var(--sidebar-w)}
+section{border-bottom:1px solid var(--line)}
+
+/* ---------- 히어로 ---------- */
+#hero{
+  min-height:100vh;display:grid;grid-template-columns:1fr 1fr;
+  align-items:center;padding:0 56px;position:relative;overflow:hidden;
+}
+#hero .txt h1{
+  font-family:var(--font-disp);font-weight:800;
+  font-size:clamp(44px,5.6vw,84px);line-height:1.02;letter-spacing:-.03em;
+}
+#hero .txt h1 .accent{color:var(--accent)}
+#hero .txt .tag{margin-top:22px;font-size:16px;color:var(--sub);max-width:40ch}
+#hero .txt .meta{
+  margin-top:36px;display:flex;gap:26px;
+  font-family:var(--font-mono);font-size:11px;color:var(--sub);letter-spacing:.08em;
+}
+#hero .txt .meta b{display:block;color:var(--txt);font-size:14px;margin-bottom:2px}
+#hero .stage{
+  height:auto;align-self:center;
+  display:flex;flex-direction:column;justify-content:center;gap:16px;
+  padding:70px 0;
+}
+.hvid{
+  aspect-ratio:16/9;border-radius:14px;overflow:hidden;
+  border:1px solid var(--line);background:#fff;
+}
+.hvid iframe{width:100%;height:100%;border:none;display:block}
+/* 3D 없는 섹션(layout:"media")의 왼쪽 큰 미디어 영역 */
+.bigmedia{position:sticky;top:70px;display:flex;flex-direction:column;gap:14px}
+.bigmedia .mitem{aspect-ratio:16/9}
+#hero .scroll-hint{
+  position:absolute;bottom:30px;left:56px;
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.22em;color:var(--sub);
+  display:flex;align-items:center;gap:10px;
+}
+.scroll-hint .bar{width:1px;height:34px;background:var(--line);position:relative;overflow:hidden}
+.scroll-hint .bar::after{
+  content:'';position:absolute;left:0;top:-40%;width:100%;height:40%;
+  background:var(--accent);animation:drip 2s ease-in-out infinite;
+}
+@keyframes drip{to{top:110%}}
+
+/* ---------- 프로젝트 섹션 공통 템플릿 ---------- */
+.proj{padding:0 56px}
+.proj .inner{min-height:158vh;padding:80px 0 90px}
+.proj header.ph{margin-bottom:34px;max-width:900px}
+.proj .eyebrow{
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.18em;
+  color:var(--accent);display:flex;align-items:center;gap:12px;margin-bottom:14px;
+}
+.proj .eyebrow::after{content:'';flex:0 0 44px;height:1px;background:var(--accent);opacity:.4}
+.proj h2{
+  font-family:var(--font-disp);font-weight:700;
+  font-size:clamp(28px,3.2vw,46px);letter-spacing:-.02em;line-height:1.08;
+}
+.proj .sub{margin-top:10px;color:var(--sub);font-size:15px;max-width:62ch}
+
+.proj .grid{
+  display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:28px;
+  align-items:start;
+}
+/* 왼쪽 — 3D 뷰어 (sticky: 오른쪽 내용이 흐르는 동안 고정) */
+.viewer-wrap{position:sticky;top:70px}
+.viewer{
+  position:relative;height:calc(100vh - 140px);min-height:480px;
+  background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;
+}
+.viewer canvas{display:block;width:100%;height:100%}
+.viewer .vhud{
+  position:absolute;top:14px;left:16px;pointer-events:none;
+  font-family:var(--font-mono);font-size:10px;color:var(--sub);letter-spacing:.08em;line-height:1.9;
+}
+.viewer .vhud .k{color:var(--accent)}
+.viewer .vctrl{position:absolute;bottom:14px;left:16px;display:flex;gap:6px}
+.viewer .vctrl button{
+  font-family:var(--font-mono);font-size:10.5px;color:var(--sub);
+  background:var(--bg);border:1px solid var(--line);border-radius:6px;
+  padding:6px 11px;cursor:pointer;transition:.2s;
+}
+.viewer .vctrl button:hover{color:var(--accent);border-color:var(--accent)}
+.viewer .vload{
+  position:absolute;inset:0;display:grid;place-items:center;
+  font-family:var(--font-mono);font-size:11px;color:var(--sub);letter-spacing:.14em;
+  background:#fff;transition:opacity .5s;
+}
+.viewer .vload.off{opacity:0;pointer-events:none}
+
+/* 핫스팟 */
+.hs{
+  position:absolute;width:24px;height:24px;transform:translate(-50%,-50%);cursor:pointer;z-index:6;
+}
+.hs .dot{
+  width:24px;height:24px;border-radius:50%;
+  border:1.5px solid var(--accent);background:rgba(43,76,126,.08);
+  display:grid;place-items:center;color:var(--accent);font-size:15px;font-weight:400;
+  transition:.2s;
+}
+.hs .dot::before{
+  content:'';position:absolute;inset:-5px;border-radius:50%;
+  border:1px solid var(--accent);opacity:.3;animation:hsPulse 2.6s infinite;
+}
+@keyframes hsPulse{0%{transform:scale(.85);opacity:.4}100%{transform:scale(1.55);opacity:0}}
+.hs:hover .dot,.hs.on .dot{background:var(--accent);color:#fff}
+
+/* 핫스팟 상세 카드 (뷰어 안 우하단) */
+.hs-card{
+  position:absolute;right:14px;bottom:14px;width:min(320px,72%);
+  background:var(--bg);border:1px solid var(--line);border-radius:12px;
+  padding:16px 18px;z-index:8;box-shadow:0 12px 30px rgba(26,26,26,.08);
+  opacity:0;transform:translateY(8px);pointer-events:none;transition:.28s;
+}
+.hs-card.show{opacity:1;transform:none;pointer-events:auto}
+.hs-card .ci{font-family:var(--font-mono);font-size:10px;color:var(--accent);letter-spacing:.14em}
+.hs-card h4{font-size:15px;font-weight:700;margin:4px 0 6px}
+.hs-card p{font-size:12.5px;color:var(--sub);line-height:1.6}
+.hs-card .cs{display:flex;gap:8px;margin-top:10px}
+.hs-card .cs div{flex:1;background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.hs-card .cs .l{font-family:var(--font-mono);font-size:9.5px;color:var(--sub);letter-spacing:.06em}
+.hs-card .cs .v{font-family:var(--font-mono);font-size:13.5px;color:var(--accent);font-weight:600;margin-top:2px}
+.hs-card .cx{
+  position:absolute;top:10px;right:12px;border:none;background:none;cursor:pointer;
+  color:var(--sub);font-size:14px;line-height:1;
+}
+.hs-card .cx:hover{color:var(--txt)}
+
+/* 오른쪽 — 설계표 + 미디어 */
+.panel{display:flex;flex-direction:column;gap:22px}
+.card{
+  background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px 28px;
+}
+.card .ct{
+  font-family:var(--font-mono);font-size:10.5px;letter-spacing:.18em;color:var(--sub);
+  display:flex;align-items:center;gap:10px;margin-bottom:18px;text-transform:uppercase;
+}
+.card .ct::before{content:'';width:16px;height:1px;background:var(--accent)}
+
+/* 설계 사양표 — 도면 표제란 감성 */
+table.spec{width:100%;border-collapse:collapse}
+table.spec td{padding:10px 4px;border-bottom:1px solid var(--line);font-size:13.5px;vertical-align:baseline}
+table.spec tr:last-child td{border-bottom:none}
+table.spec td.k{color:var(--sub);width:46%}
+table.spec td.v{font-family:var(--font-mono);text-align:right;font-weight:500}
+table.spec td.v .unit{color:var(--sub);font-size:11px;margin-left:3px}
+table.spec td.v .num{color:var(--txt)}
+.formula{
+  margin-top:16px;padding:16px 14px;background:var(--bg);
+  border:1px solid var(--line);border-radius:10px;overflow-x:auto;
+}
+.formula .fl{font-family:var(--font-mono);font-size:9.5px;color:var(--sub);letter-spacing:.1em;margin-bottom:8px}
+.formula .ktx{font-size:14px}
+
+/* 미디어 갤러리 */
+.media-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mitem{
+  aspect-ratio:16/10;border-radius:10px;border:1px solid var(--line);overflow:hidden;
+  position:relative;background:var(--bg);
+}
+.mitem.wide{grid-column:1/3;aspect-ratio:16/8.4}
+.mitem img,.mitem iframe{width:100%;height:100%;object-fit:cover;border:none;display:block}
+.mitem .cap{
+  position:absolute;left:0;right:0;bottom:0;padding:8px 10px 7px;
+  font-family:var(--font-mono);font-size:9.5px;letter-spacing:.05em;color:#fff;
+  background:linear-gradient(0deg,rgba(26,26,26,.65),transparent);
+}
+.mitem .ph{
+  position:absolute;inset:0;display:grid;place-items:center;
+  font-family:var(--font-mono);font-size:10px;color:var(--sub);letter-spacing:.1em;text-align:center;line-height:1.8;
+}
+
+/* 등장 애니메이션 (페이드업) */
+.rise{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+.rise.in{opacity:1;transform:none}
+
+/* ---------- Contact ---------- */
+#contact{min-height:88vh;display:grid;place-items:center;padding:80px 56px;border-bottom:none}
+#contact .cwrap{display:grid;grid-template-columns:auto 1fr;gap:56px;align-items:center;max-width:860px;width:100%}
+#contact .photo{
+  width:220px;height:280px;border-radius:14px;border:1px solid var(--line);
+  background:#fff;overflow:hidden;display:grid;place-items:center;
+  font-family:var(--font-mono);font-size:10px;color:var(--sub);letter-spacing:.1em;
+}
+#contact .photo img{width:100%;height:100%;object-fit:cover}
+#contact h2{font-family:var(--font-disp);font-weight:800;font-size:clamp(30px,3.4vw,50px);letter-spacing:-.02em}
+#contact .cl{margin-top:26px;display:flex;flex-direction:column;gap:12px}
+#contact .cl a{
+  display:flex;align-items:baseline;gap:16px;text-decoration:none;color:var(--txt);
+  font-size:16px;padding-bottom:10px;border-bottom:1px solid var(--line);transition:.2s;
+}
+#contact .cl a .lb{font-family:var(--font-mono);font-size:10px;color:var(--sub);letter-spacing:.14em;width:52px}
+#contact .cl a:hover{color:var(--accent)}
+
+/* ---------- 모바일 ---------- */
+@media(max-width:1020px){
+  nav.side{
+    position:sticky;top:0;bottom:auto;width:100%;height:auto;
+    flex-direction:row;align-items:center;gap:18px;
+    padding:14px 20px;border-right:none;border-bottom:1px solid var(--line);
+    overflow-x:auto;
+  }
+  .side .who{margin:0;flex:0 0 auto}
+  .side .who .rl{display:none}
+  .side ol{flex-direction:row;gap:4px}
+  .side ol a{padding:5px 9px}
+  .side ol a .tt{display:none}
+  .side .foot{display:none}
+  main{margin-left:0}
+  #hero{grid-template-columns:1fr;padding:0 22px;gap:0}
+  #hero .stage{height:52vh;order:-1;margin-top:60px}
+  .proj{padding:0 22px}
+  .proj .inner{min-height:auto;padding:60px 0}
+  .proj .grid{grid-template-columns:1fr}
+  .viewer-wrap{position:relative;top:0}
+  .viewer{height:56vh;min-height:380px}
+  #contact .cwrap{grid-template-columns:1fr;gap:30px;justify-items:center;text-align:center}
+  #contact .cl a{justify-content:center}
+}
+@media(prefers-reduced-motion:reduce){
+  .rise{transition:none;opacity:1;transform:none}
+  .scroll-hint .bar::after,.hs .dot::before{animation:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ 좌측 사이드바 (JS가 목차 자동 생성) ============ -->
+<nav class="side">
+  <div class="who">
+    <div class="nm">임재훈</div>
+    <div class="rl">PORTFOLIO</div>
+  </div>
+  <ol id="toc"></ol>
+  <div class="foot">MECHANICAL DESIGN<br>CATIA V5 · ANSYS · CFD</div>
+</nav>
+
+<main id="main"><!-- JS가 CONFIG 기반으로 섹션 자동 생성 --></main>
+
+<!-- ============ 라이브러리 ============ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+
+<script>
+/* ================================================================
+   ★★★ CONFIG — 선생님이 편집하는 곳은 여기뿐입니다 ★★★
+
+   · glb        : GLB 파일 경로. GitHub 레포에 함께 올리고 상대경로 권장
+                  (예: "assets/models/Erector.glb"). 비우면 자리표시 모델.
+   · modelYaw   : 초기 회전(라디안). 모델 방향이 이상하면 조정.
+   ── 페이지별 세부 조정 (선택, 안 쓰면 기본값) ──
+   · cam        : 카메라 시작 위치 [x,y,z]. 예: cam:[3.5, 0.8, 4]
+                  (멀리서 보고 싶으면 숫자 키움, 위에서 보려면 y 키움)
+   · rot        : 스크롤 회전량. 기본 1.6 (= 0.8바퀴).
+                  예: rot:0.6 은 살짝만, rot:3 은 1.5바퀴 회전.
+   · hotspots   : pos는 [x,y,z] 3D 좌표 (모델 정규화 후 대략 -1.5~1.5 범위)
+   · specs      : 설계표 행. num:true면 화면 진입 시 카운트업.
+   · latex      : 대표 수식 (KaTeX 문법, 백슬래시 두 번 \\)
+   · media      : {type:'image', src, cap} 또는 {type:'youtube', id, cap}
+   ================================================================ */
+const SITE = {
+  name: "임재훈",
+  heroTitle: ["Mechanical", "Design", "Portfolio"],
+  tagline: "발사대 GSE부터 초음속 흡입구까지 — CATIA 설계와 수치 검증으로 완성한 7개의 프로젝트.",
+  heroVideos: [            // 히어로에 위아래로 배치되는 유튜브 영상 (ID만)
+    "avftUkOVd78",
+    "Z2ezQZCM8-4",
+  ],
+  meta: [
+    { b: "CATIA V5", s: "DMU KINEMATICS" },
+    { b: "ANSYS",    s: "STRUCTURAL / TOPOLOGY" },
+    { b: "pyBaram",  s: "COMPRESSIBLE CFD" },
+  ],
+  tel:   "+82 10-0000-0000",           // ← 실제 번호로 교체
+  email: "your.email@example.com",     // ← 실제 이메일로 교체
+  photo: "",                           // ← "assets/images/me.jpg" 식으로 교체
+};
+
+const PROJECTS = [
+{
+  id:"spmt", no:"01", title:"SPMT",
+  subtitle:"발사체·TE·ECS 총 71.8t을 24륜으로 분담해 옮기는 자주식 모듈 운반차. 다축 분담과 대형 타이어로 접지압을 낮춰 발사장 포장면을 보호한다.",
+  glb:"assets/models/SPMT.glb", modelYaw:0.5,
+  hotspots:[
+    { pos:[0,0.55,0.6], t:"적재 플랫폼", d:"TE·발사체·ECS를 통합 적재. 2대 1조 운용으로 하중을 절반씩 분담한다.", s:[["분담하중","352 kN"],["구성","2대 × 6축"]] },
+    { pos:[0.7,-0.45,0.55], t:"타이어 (⌀1.39 m)", d:"대형 타이어의 넓은 접지면으로 지면 압력을 낮춰 노면을 보호한다.", s:[["륜하중","3.0 t"],["접지압","163 kPa"]] },
+  ],
+  specs:[
+    { k:"총 운반 하중", v:71.8, unit:"t", num:true },
+    { k:"환산 하중", v:704, unit:"kN", num:true },
+    { k:"휠 구성", v:"2대 × 6축 × 2륜 = 24륜" },
+    { k:"타이어당 하중", v:3.0, unit:"t", num:true },
+    { k:"타이어 직경", v:"⌀1.39", unit:"m" },
+    { k:"타이어 접지압", v:163, unit:"kPa", num:true },
+  ],
+  latex:{ label:"타이어 접지압 검증", tex:"p=\\frac{P_t}{b\\cdot \\ell}=\\frac{29.4\\times10^{3}}{0.4\\times0.45}\\approx 163\\ \\text{kPa}" },
+  media:[
+    { type:"image", src:"", cap:"CATIA 어셈블리" },
+    { type:"image", src:"", cap:"하중 분배 개념도" },
+  ],
+},
+{
+  id:"erector", no:"02", title:"Erector",
+  subtitle:"발사체를 수평에서 수직으로 세우는 기립 장치. ⌀300mm 유압 실린더와 3단 텔레스코픽 구조로 0°→90° 기립을 구현했다.",
+  glb:"assets/models/Erector.glb", modelYaw:0.4,
+  hotspots:[
+    { pos:[0,1.0,0.5], t:"3단 텔레스코픽 스테이지", d:"신장 시 총 14.3m 스트로크를 만들어내는 다단 구조.", s:[["총 스트로크","14.3 m"],["구성","3단"]] },
+    { pos:[0.5,0,0.5], t:"유압 실린더", d:"기립 구동의 핵심. 힌지 모멘트를 감당하는 추력을 발생시킨다.", s:[["보어","⌀300 mm"],["기립각","0→90°"]] },
+    { pos:[-0.3,-0.9,0.5], t:"베이스 힌지", d:"기립 회전의 기준점이자 최대 하중 집중부. SF 2.0으로 검증.", s:[["SF","2.0"],["기준","NASA-STD-5001B"]] },
+  ],
+  specs:[
+    { k:"유압 실린더 보어", v:"⌀300", unit:"mm" },
+    { k:"총 스트로크 (3단)", v:14.3, unit:"m", num:true },
+    { k:"기립 각도", v:"0° → 90°" },
+    { k:"안전계수 (SF)", v:2.0, num:true },
+    { k:"설계 기준", v:"NASA-STD-5001B" },
+  ],
+  latex:{ label:"힌지 모멘트 평형", tex:"M_{hinge}=W\\,L_{cg}\\cos\\theta = F_{cyl}\\cdot d(\\theta)" },
+  media:[
+    { type:"youtube", id:"", cap:"DMU 기립 시퀀스" },
+    { type:"image", src:"", cap:"CATIA 어셈블리" },
+    { type:"image", src:"", cap:"ANSYS 응력 해석" },
+  ],
+},
+{
+  id:"te", no:"03", title:"Transporter Erector",
+  subtitle:"Falcon 9 Block 5 건조질량 기준으로 설계 허용하중을 산정하고, ANSYS 위상 최적화로 트러스 토폴로지를 검증한 발사체 지지 구조물.",
+  glb:"assets/models/TE.glb", modelYaw:0.4,
+  hotspots:[
+    { pos:[0,0.8,0.5], t:"트러스 구조", d:"위상 최적화(Minimize Compliance, 질량 30~40% 제약) 결과를 Antares TEL 트러스와 교차 검증.", s:[["기법","Topology Opt."],["툴","ANSYS"]] },
+    { pos:[0,-0.5,0.6], t:"새들 지지부", d:"발사체 동체를 받치는 접촉부. 허용하중 기준으로 반력을 검증했다.", s:[["허용하중","565 kN"],["SF","2.0"]] },
+  ],
+  specs:[
+    { k:"대상 발사체", v:"Falcon 9 Block 5" },
+    { k:"발사체 건조질량", v:28799, unit:"kg", num:true },
+    { k:"설계 허용하중", v:565, unit:"kN", num:true },
+    { k:"안전계수 (SF)", v:2.0, num:true },
+    { k:"설계 기준", v:"NASA-STD-5001B" },
+    { k:"구조 검증", v:"ANSYS 위상 최적화 → 트러스" },
+  ],
+  latex:{ label:"설계 허용하중", tex:"P_{allow}=m_{dry}\\,g\\times SF = 28{,}799\\times9.81\\times2.0 \\approx 565\\ \\text{kN}" },
+  media:[
+    { type:"image", src:"", cap:"위상 최적화 결과" },
+    { type:"image", src:"", cap:"트러스 구조 비교" },
+  ],
+},
+{
+  id:"afp", no:"04", title:"AFP Head",
+  subtitle:"KUKA KR210 기반 6축 로봇암과 싱글 토우 AFP 헤드. 6개 유닛의 유기적 구성으로 TPS 패널 프리프레그를 ±0.05mm 정밀도로 적층한다.",
+  glb:"assets/models/AFP_Head.glb", modelYaw:0.6,
+  hotspots:[
+    { pos:[0,0.7,0.5], t:"Tension Control Unit", d:"PID 폐루프 제어로 적층 장력을 실시간 유지. 리니어 포텐셔미터 + 자기 분말 브레이크.", s:[["제어","PID 폐루프"],["역할","장력 유지"]] },
+    { pos:[0.5,-0.2,0.5], t:"Heating + Compaction", d:"레이저 열원으로 닙 포인트를 국소 가열하고 압착 롤러로 물리적 압착.", s:[["열원","Laser"],["방식","In-situ"]] },
+    { pos:[-0.5,0,0.5], t:"Clamp & Cut Unit", d:"단일 액추에이터로 고정과 절단을 통합 — 선 고정 후 절단 시퀀스.", s:[["구동","서보+공압"],["기능","고정·절단"]] },
+  ],
+  specs:[
+    { k:"참조 로봇", v:"KUKA KR210" },
+    { k:"반복 정밀도", v:"±0.05", unit:"mm" },
+    { k:"작업 반경", v:2.7, unit:"m", num:true },
+    { k:"헤드 구성", v:"6 Units" },
+    { k:"적층 각도", v:"0° / 45° / 90°" },
+    { k:"동작 검증", v:"DMU Kinematics (ㄹ자 경로)" },
+  ],
+  latex:{ label:"적층 경로 동기화", tex:"\\theta_i(t)\\ \\text{직접 각도 부여} \\Rightarrow \\text{IK 미지원 극복}" },
+  media:[
+    { type:"youtube", id:"", cap:"AFP 적층 시뮬레이션" },
+    { type:"image", src:"", cap:"6유닛 구성도" },
+  ],
+},
+{
+  id:"conveyor", no:"05", title:"Conveyor Belt",
+  subtitle:"TPS 패널 라인의 이송 축. 롤러 Revolute Joint 회전으로 벨트 이송을 구현하고, 랙앤피니언 진공 패킹 부스와 흡착 로봇암으로 AMR에 인계한다.",
+  glb:"assets/models/Conveyor.glb", modelYaw:0.3,
+  hotspots:[
+    { pos:[0.6,0.2,0.5], t:"구동 롤러", d:"Revolute Joint 회전으로 벨트 이송을 표현. 나선형 프로젝션으로 회전을 시각화.", s:[["조인트","Revolute"],["표현","나선 마킹"]] },
+    { pos:[-0.5,0.3,0.5], t:"진공 패킹 부스", d:"랙앤피니언 도어의 상하 개폐 Kinematics를 구현.", s:[["도어","Rack&Pinion"],["기능","진공 패킹"]] },
+  ],
+  specs:[
+    { k:"이송 방식", v:"롤러 Revolute 회전" },
+    { k:"높이 조절", v:"레벨링 풋" },
+    { k:"패킹 부스 도어", v:"랙앤피니언 상하 개폐" },
+    { k:"후단 인계", v:"흡착 로봇암 → AMR" },
+    { k:"동작 검증", v:"DMU Kinematics" },
+  ],
+  latex:{ label:"벨트 이송 속도", tex:"v_{belt}=\\omega_{roller}\\times r" },
+  media:[
+    { type:"youtube", id:"", cap:"라인 통합 시뮬레이션" },
+    { type:"image", src:"", cap:"컨베이어 어셈블리" },
+  ],
+},
+{
+  id:"ptc", no:"06", title:"PTC",
+  subtitle:"※ 이 섹션의 소개·제원은 선생님이 채워야 합니다 — CONFIG의 ptc 항목을 수정하세요.",
+  glb:"assets/models/PTC.glb", modelYaw:0.4,
+  hotspots:[
+    { pos:[0,0.5,0.5], t:"핫스팟 예시", d:"CONFIG에서 pos 좌표와 설명을 채우세요.", s:[["항목","값"],["항목","값"]] },
+  ],
+  specs:[
+    { k:"항목 1", v:"값 입력" },
+    { k:"항목 2", v:0, unit:"단위", num:true },
+  ],
+  latex:{ label:"대표 수식", tex:"F=ma" },
+  media:[ { type:"image", src:"", cap:"이미지 캡션" } ],
+},
+{
+  id:"intake", no:"07", title:"Supersonic Air Intake",
+  subtitle:"마하 3 초음속 흡입구 공력 설계. 총 편향각 25° 제약에서 단일·이중·삼중 쐐기를 비교하고, pyBaram CFD로 전압력 회복률 향상을 검증했다.",
+  layout:"media",              // ← 3D 뷰어 대신 왼쪽에 큰 미디어 배치
+  bigMedia:[                   // 왼쪽 큰 영역에 위→아래 순서로 표시
+    { type:"image", src:"", cap:"마하수 컨투어 (pyBaram CFD)" },
+    { type:"image", src:"", cap:"쐐기 형상 비교 — 단일/이중/삼중" },
+  ],
+  specs:[
+    { k:"설계 마하수", v:3.0, num:true },
+    { k:"총 편향각 제약", v:"≤ 25°" },
+    { k:"쐐기 구성", v:"단일 23° / 이중 11+13° / 삼중 7+8+9°" },
+    { k:"CFD 솔버", v:"pyBaram (압축성)" },
+    { k:"격자 생성", v:"Gmsh" },
+    { k:"검증 결과", v:"단수↑ → 회복률↑ 재현" },
+  ],
+  latex:{ label:"경사충격파 관계", tex:"\\tan\\delta=2\\cot\\beta\\,\\frac{M_1^2\\sin^2\\beta-1}{M_1^2(\\gamma+\\cos 2\\beta)+2}" },
+  media:[
+    { type:"image", src:"", cap:"마하수 컨투어 (CFD)" },
+    { type:"image", src:"", cap:"쐐기 단수별 회복률 비교" },
+  ],
+},
+];
+/* ================== CONFIG 끝 — 아래는 엔진 ================== */
+
+
+/* ---------- 섹션 DOM 생성 ---------- */
+const main = document.getElementById('main');
+const toc  = document.getElementById('toc');
+
+function el(tag, cls, html){ const e=document.createElement(tag); if(cls)e.className=cls; if(html!=null)e.innerHTML=html; return e; }
+
+/* 미디어 아이템 HTML (image/gif = type:"image", 유튜브 = type:"youtube") */
+function mItem(m, extraCls=''){
+  if(m.type==='youtube') return `<div class="mitem${extraCls}">${m.id
+    ? `<iframe src="https://www.youtube.com/embed/${m.id}" allowfullscreen loading="lazy"></iframe>`
+    : `<div class="ph">YOUTUBE ID를<br>CONFIG에 입력</div>`}<div class="cap">${m.cap}</div></div>`;
+  return `<div class="mitem${extraCls}">${m.src
+    ? `<img src="${m.src}" alt="${m.cap}" loading="lazy">`
+    : `<div class="ph">이미지 경로를<br>CONFIG에 입력</div>`}<div class="cap">${m.cap}</div></div>`;
+}
+
+/* 히어로 */
+const hero = el('section','', `
+  <div id="hero">
+    <div class="txt">
+      <h1>${SITE.heroTitle.map((w,i)=>i===SITE.heroTitle.length-1?`<span class="accent">${w}</span>`:w).join('<br>')}</h1>
+      <p class="tag rise">${SITE.tagline}</p>
+      <div class="meta rise">${SITE.meta.map(m=>`<div><b>${m.b}</b>${m.s}</div>`).join('')}</div>
+    </div>
+    <div class="stage">${SITE.heroVideos.map(id=>`
+      <div class="hvid"><iframe src="https://www.youtube.com/embed/${id}" title="portfolio video"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen loading="lazy"></iframe></div>`).join('')}
+    </div>
+    <div class="scroll-hint"><span class="bar"></span>SCROLL</div>
+  </div>`);
+hero.id='top';
+main.appendChild(hero);
+
+/* 프로젝트 섹션들 */
+PROJECTS.forEach(p=>{
+  const sec = el('section','proj'); sec.id = p.id;
+  sec.innerHTML = `
+  <div class="inner">
+    <header class="ph">
+      <div class="eyebrow rise">PROJECT ${p.no}</div>
+      <h2 class="rise">${p.title}</h2>
+      <p class="sub rise">${p.subtitle}</p>
+    </header>
+    <div class="grid">
+      ${p.layout==='media' ? `
+      <div class="viewer-wrap"><div class="bigmedia">
+        ${(p.bigMedia||p.media).map(m=>mItem(m)).join('')}
+      </div></div>` : `
+      <div class="viewer-wrap">
+        <div class="viewer" data-proj="${p.id}">
+          <div class="vload">LOADING MODEL…</div>
+          <div class="vhud"><span class="k">DRAG</span> 회전 · <span class="k">SCROLL</span> 페이지와 함께 자동 회전</div>
+          <div class="vctrl">
+            <button data-act="zin">＋</button>
+            <button data-act="zout">－</button>
+            <button data-act="reset">RESET</button>
+          </div>
+          <div class="hs-card">
+            <button class="cx" aria-label="닫기">✕</button>
+            <div class="ci"></div><h4></h4><p></p><div class="cs"></div>
+          </div>
+        </div>
+      </div>`}
+      <div class="panel">
+        <div class="card rise">
+          <div class="ct">Design Specifications</div>
+          <table class="spec">${p.specs.map(s=>`
+            <tr><td class="k">${s.k}</td>
+                <td class="v">${s.num
+                  ? `<span class="num" data-count="${s.v}">${typeof s.v==='number'&&s.v%1?'0.0':'0'}</span>`
+                  : `<span class="num">${s.v}</span>`}${s.unit?`<span class="unit">${s.unit}</span>`:''}</td></tr>`).join('')}
+          </table>
+          ${p.latex?`<div class="formula"><div class="fl">${p.latex.label}</div><div class="ktx" data-tex="${p.latex.tex.replace(/"/g,'&quot;')}"></div></div>`:''}
+        </div>
+        <div class="card rise">
+          <div class="ct">Media</div>
+          <div class="media-grid">${p.media.map((m,i)=>{
+            const wide = p.media.length%2===1 && i===0 ? ' wide':'';
+            return mItem(m, wide);
+          }).join('')}</div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+  main.appendChild(sec);
+});
+
+/* Contact */
+const contact = el('section','',`
+  <div id="contact">
+    <div class="cwrap">
+      <div class="photo">${SITE.photo?`<img src="${SITE.photo}" alt="${SITE.name}">`:'지원자 사진<br>(CONFIG.photo)'}</div>
+      <div>
+        <h2>Contact</h2>
+        <div class="cl">
+          <a href="tel:${SITE.tel.replace(/[^+\d]/g,'')}"><span class="lb">TEL</span>${SITE.tel}</a>
+          <a href="mailto:${SITE.email}"><span class="lb">EMAIL</span>${SITE.email}</a>
+        </div>
+      </div>
+    </div>
+  </div>`);
+contact.id='contact-sec';
+main.appendChild(contact);
+
+/* 목차 */
+const tocItems = [
+  ...PROJECTS.map(p=>({id:p.id,no:p.no,t:p.title})),
+  {id:'contact-sec',no:'08',t:'Contact'},
+];
+tocItems.forEach(i=>{
+  const a = el('a','',`<span class="no">${i.no}</span><span class="tt">${i.t}</span>`);
+  a.href = `#${i.id}`; a.dataset.target = i.id;
+  const li = el('li'); li.appendChild(a); toc.appendChild(li);
+});
+
+/* ---------- Lenis 부드러운 스크롤 ---------- */
+let lenis = null;
+if (window.Lenis) {
+  lenis = new Lenis({ duration: 1.15, smoothWheel: true });
+  function raf(t){ lenis.raf(t); requestAnimationFrame(raf); }
+  requestAnimationFrame(raf);
+}
+document.querySelectorAll('#toc a').forEach(a=>{
+  a.addEventListener('click', e=>{
+    e.preventDefault();
+    const t = document.getElementById(a.dataset.target);
+    if (lenis) lenis.scrollTo(t, {offset:-8}); else t.scrollIntoView({behavior:'smooth'});
+  });
+});
+
+/* ---------- 스크롤 스파이 ---------- */
+const spy = new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    if(!e.isIntersecting) return;
+    document.querySelectorAll('#toc a').forEach(a=>
+      a.classList.toggle('on', a.dataset.target===e.target.id));
+  });
+},{rootMargin:'-45% 0px -50% 0px'});
+tocItems.forEach(i=>{ const s=document.getElementById(i.id); if(s) spy.observe(s); });
+
+/* ---------- 페이드업 등장 ---------- */
+const riser = new IntersectionObserver(es=>{
+  es.forEach((e)=>{ if(e.isIntersecting){
+    e.target.classList.add('in'); riser.unobserve(e.target);
+  }});
+},{threshold:.15});
+document.querySelectorAll('.rise').forEach((r,i)=>{
+  r.style.transitionDelay = `${(i%4)*70}ms`; riser.observe(r);
+});
+
+/* ---------- 숫자 카운트업 ---------- */
+const counter = new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    if(!e.isIntersecting) return;
+    const t = e.target, end = parseFloat(t.dataset.count);
+    const dec = (String(t.dataset.count).split('.')[1]||'').length;
+    const dur = 1200, t0 = performance.now();
+    (function tick(now){
+      const p = Math.min((now-t0)/dur, 1), ease = 1-Math.pow(1-p,3);
+      t.textContent = (end*ease).toLocaleString(undefined,{minimumFractionDigits:dec,maximumFractionDigits:dec});
+      if(p<1) requestAnimationFrame(tick);
+    })(t0);
+    counter.unobserve(t);
+  });
+},{threshold:.6});
+document.querySelectorAll('[data-count]').forEach(n=>counter.observe(n));
+
+/* ---------- KaTeX 수식 렌더 ---------- */
+window.addEventListener('load', ()=>{
+  if(!window.katex) return;
+  document.querySelectorAll('.ktx').forEach(k=>{
+    try{ katex.render(k.dataset.tex, k, {throwOnError:false, displayMode:true}); }
+    catch(err){ k.textContent = k.dataset.tex; }
+  });
+});
+
+/* ---------- 3D 뷰어 엔진 ----------
+   각 뷰어는 화면에 보일 때만 초기화·렌더 (성능/컨텍스트 보호) */
+const VIEWERS = [];
+
+function makePlaceholder(){ // GLB 없을 때 자리표시 모델
+  const g = new THREE.Group();
+  const mat = new THREE.MeshStandardMaterial({color:0x9aa3ad, metalness:.7, roughness:.45});
+  const acc = new THREE.MeshStandardMaterial({color:0x2B4C7E, metalness:.5, roughness:.5});
+  const a = new THREE.Mesh(new THREE.BoxGeometry(1.6,.5,.8), mat); a.position.y=-.55;
+  const b = new THREE.Mesh(new THREE.CylinderGeometry(.22,.22,1.5,24), mat); b.rotation.z=.5;
+  const c = new THREE.Mesh(new THREE.CylinderGeometry(.3,.3,.7,20), acc); c.rotation.x=Math.PI/2; c.position.set(-.6,-.5,0);
+  g.add(a,b,c);
+  return g;
+}
+
+function initViewer(box, proj){
+  const scene = new THREE.Scene();
+  const cam = new THREE.PerspectiveCamera(42, box.clientWidth/box.clientHeight, .05, 100);
+  const camHome = proj.cam || [2.6, 1.2, 3.4];   // 섹션별 카메라 위치 (CONFIG cam)
+  cam.position.set(...camHome);
+  const ren = new THREE.WebGLRenderer({antialias:true, alpha:true});
+  ren.setSize(box.clientWidth, box.clientHeight);
+  ren.setPixelRatio(Math.min(devicePixelRatio, 2));
+  ren.outputEncoding = THREE.sRGBEncoding;
+  box.prepend(ren.domElement);
+
+  scene.add(new THREE.HemisphereLight(0xffffff, 0xd8d5cd, .95));
+  const key = new THREE.DirectionalLight(0xffffff, .9); key.position.set(4,6,4); scene.add(key);
+  const rim = new THREE.DirectionalLight(0xbcc8da, .5); rim.position.set(-4,2,-3); scene.add(rim);
+
+  const pivot = new THREE.Group(); scene.add(pivot);
+  const loadEl = box.querySelector('.vload');
+
+  function fit(obj){ // 모델 정규화: 중심 이동 + 크기 통일
+    const bb = new THREE.Box3().setFromObject(obj);
+    const size = bb.getSize(new THREE.Vector3()), ctr = bb.getCenter(new THREE.Vector3());
+    const s = 2.2/Math.max(size.x,size.y,size.z);
+    obj.position.sub(ctr); obj.scale.setScalar(s);
+    obj.position.multiplyScalar(s);
+  }
+
+  if (proj.glb) {
+    new THREE.GLTFLoader().load(proj.glb,
+      g=>{ fit(g.scene); pivot.add(g.scene); loadEl.classList.add('off'); },
+      undefined,
+      ()=>{ const ph=makePlaceholder(); pivot.add(ph);
+            loadEl.textContent='GLB 경로 확인 필요 — 자리표시 모델';
+            setTimeout(()=>loadEl.classList.add('off'),1400); });
+  } else {
+    pivot.add(makePlaceholder()); loadEl.classList.add('off');
+  }
+  pivot.rotation.y = proj.modelYaw || 0;
+
+  const ctl = new THREE.OrbitControls(cam, ren.domElement);
+  ctl.enableDamping = true; ctl.dampingFactor = .08;
+  ctl.enableZoom = false; ctl.enablePan = false;   // 휠은 페이지 스크롤에 양보
+
+  /* 스크롤 회전 vs 사용자 조작 조율 */
+  const V = { scene, cam, ren, pivot, ctl, box, proj,
+              scrollRot:0, userHold:0, active:false, hsEls:[] };
+  ren.domElement.addEventListener('pointerdown', ()=>V.userHold = performance.now()+4000);
+
+  /* 줌/리셋 버튼 */
+  box.querySelectorAll('.vctrl button').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      const dir = cam.position.clone().normalize();
+      if(b.dataset.act==='zin')  cam.position.addScaledVector(dir,-.4);
+      if(b.dataset.act==='zout') cam.position.addScaledVector(dir, .4);
+      if(b.dataset.act==='reset'){ cam.position.set(...camHome); ctl.target.set(0,0,0); V.userHold=0; }
+      cam.position.clampLength(1.6, 9);
+    });
+  });
+
+  /* 핫스팟 생성 */
+  const card = box.querySelector('.hs-card');
+  proj.hotspots.forEach((h,idx)=>{
+    const e = el('div','hs',`<div class="dot">+</div>`);
+    box.appendChild(e); V.hsEls.push({e,h});
+    e.addEventListener('click', ()=>{
+      V.hsEls.forEach(o=>o.e.classList.remove('on')); e.classList.add('on');
+      card.querySelector('.ci').textContent = `COMPONENT ${String(idx+1).padStart(2,'0')}`;
+      card.querySelector('h4').textContent = h.t;
+      card.querySelector('p').textContent = h.d;
+      card.querySelector('.cs').innerHTML = h.s.map(x=>`<div><div class="l">${x[0]}</div><div class="v">${x[1]}</div></div>`).join('');
+      card.classList.add('show');
+      V.userHold = performance.now()+8000; // 카드 읽는 동안 회전 정지
+    });
+  });
+  card.querySelector('.cx').addEventListener('click', ()=>{
+    card.classList.remove('show'); V.hsEls.forEach(o=>o.e.classList.remove('on'));
+  });
+
+  /* 스크롤 진행도 → 회전 (GSAP 없으면 스크롤 리스너 폴백) */
+  const sec = box.closest('section');
+  if (window.gsap && window.ScrollTrigger) {
+    gsap.registerPlugin(ScrollTrigger);
+    ScrollTrigger.create({
+      trigger: sec, start:'top bottom', end:'bottom top', scrub:true,
+      onUpdate: st => V.scrollRot = st.progress * Math.PI * (proj.rot ?? 1.6),
+    });
+  } else {
+    addEventListener('scroll', ()=>{
+      const r = sec.getBoundingClientRect();
+      const p = Math.min(Math.max(1 - (r.bottom)/(innerHeight + r.height), 0), 1);
+      V.scrollRot = p * Math.PI * 1.6;
+    }, {passive:true});
+  }
+
+  addEventListener('resize', ()=>{
+    cam.aspect = box.clientWidth/box.clientHeight; cam.updateProjectionMatrix();
+    ren.setSize(box.clientWidth, box.clientHeight);
+  });
+
+  VIEWERS.push(V);
+  return V;
+}
+
+/* 화면에 보일 때만 활성화 */
+const vio = new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    const box = e.target;
+    if(e.isIntersecting && !box.dataset.init){
+      box.dataset.init = '1';
+      const proj = PROJECTS.find(p=>p.id===box.dataset.proj);
+      initViewer(box, proj);
+    }
+    const v = VIEWERS.find(v=>v.box===box);
+    if(v) v.active = e.isIntersecting;
+  });
+},{rootMargin:'150px'});
+document.querySelectorAll('.viewer').forEach(b=>vio.observe(b));
+
+/* ---------- 공용 렌더 루프 ---------- */
+const _v3 = new THREE.Vector3();
+function loop(){
+  requestAnimationFrame(loop);
+  const now = performance.now();
+  VIEWERS.forEach(V=>{
+    if(!V.active) return;
+    const userBusy = now < V.userHold;
+    if(!userBusy){
+      // 스크롤 회전 + 미세 자동 회전을 부드럽게 추종
+      const target = (V.proj.modelYaw||0) + V.scrollRot;
+      V.pivot.rotation.y += (target - V.pivot.rotation.y) * .06;
+    }
+    V.ctl.update();
+    V.ren.render(V.scene, V.cam);
+    // 핫스팟 2D 투영
+    V.hsEls.forEach(o=>{
+      _v3.set(...o.h.pos).applyMatrix4(V.pivot.matrixWorld).project(V.cam);
+      const x = (_v3.x*.5+.5)*V.box.clientWidth, y = (-_v3.y*.5+.5)*V.box.clientHeight;
+      o.e.style.left = x+'px'; o.e.style.top = y+'px';
+      o.e.style.display = (_v3.z<1 && x>0 && x<V.box.clientWidth) ? 'block':'none';
+    });
+  });
+}
+loop();
+</script>
+</body>
+</html>
