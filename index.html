@@ -378,6 +378,7 @@ const PROJECTS = [
   ],
   latex:{ label:"타이어 접지압 검증", tex:"p=\\frac{P_t}{b\\cdot \\ell}=\\frac{29.4\\times10^{3}}{0.4\\times0.45}\\approx 163\\ \\text{kPa}" },
   media:[
+    { type:"video", src:"assets/videos/PTC.mp4", speed : 2.25, cap:"Erector 결합 및 기립" },
     { type:"image", src:"assets/images/SPMT_01.gif", cap:"Main Plate의 변위" },
     { type:"image", src:"assets/images/SPMT_02.gif", cap:"Main Plate의 응력 변화" },
   ],
@@ -400,7 +401,7 @@ const PROJECTS = [
   ],
   latex:{ label:"힌지 모멘트 평형", tex:"M_{hinge}=W\\,L_{cg}\\cos\\theta = F_{cyl}\\cdot d(\\theta)" },
   media:[
-    { type:"youtube", id:"", cap:"DMU 기립 시퀀스" },
+    { type:"video", src:"assets/videos/PTC.mp4", speed : 2.25, cap:"Erector 결합 및 기립" },
     { type:"image", src:"assets/images/Erector_01.gif", cap:"Erector의 변위" },
     { type:"image", src:"assets/images/Erector_02.gif", cap:"Erector의 응력 변화" },
   ],
@@ -423,6 +424,7 @@ const PROJECTS = [
   ],
   latex:{ label:"설계 허용하중", tex:"P_{allow}=m_{dry}\\,g\\times SF = 28{,}799\\times9.81\\times2.0 \\approx 565\\ \\text{kN}" },
   media:[
+    { type:"video", src:"assets/videos/PTC.mp4", speed : 2.25, cap:"Erector 결합 및 기립" },
     { type:"image", src:"assets/images/TE_01.gif", cap:"TE의 변위" },
     { type:"image", src:"assets/images/TE_02.gif", cap:"TE의 응력 변화" },
   ],
@@ -521,7 +523,7 @@ function mItem(m, extraCls=''){
     ? `<iframe src="https://www.youtube.com/embed/${m.id}" allowfullscreen loading="lazy"></iframe>`
     : `<div class="ph">YOUTUBE ID를<br>CONFIG에 입력</div>`}<div class="cap">${m.cap}</div></div>`;
   if(m.type==='video') return `<div class="mitem${extraCls}">${m.src
-    ? `<video src="${m.src}" autoplay loop muted playsinline preload="metadata"></video>`
+    ? `<video src="${m.src}" autoplay loop muted playsinline preload="metadata" onplay="this.playbackRate=${m.speed || 1.0};"></video>`
     : `<div class="ph">영상(MP4) 경로를<br>CONFIG에 입력</div>`}<div class="cap">${m.cap}</div></div>`;
   return `<div class="mitem${extraCls}">${m.src
     ? `<img src="${m.src}" alt="${m.cap}" loading="lazy">`
