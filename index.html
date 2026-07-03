@@ -63,7 +63,8 @@ section{border-bottom:1px solid var(--line)}
 #hero .txt h1{font-family:var(--font-disp);font-weight:800;font-size:clamp(44px,5.6vw,84px);line-height:1.02;letter-spacing:-.03em}
 #hero .txt h1 .accent{color:var(--accent)}
 #hero .txt .tag{margin-top:22px;font-size:16px;color:var(--sub);max-width:42ch}
-#hero .txt .meta{margin-top:36px;display:flex;gap:26px;font-family:var(--font-mono);font-size:11px;color:var(--sub);letter-spacing:.06em;line-height:1.7}
+#hero .txt .meta{margin-top:36px;display:flex;gap:32px;font-family:var(--font-mono);font-size:11px;color:var(--sub);letter-spacing:.06em;line-height:1.7}
+#hero .txt .meta > div{flex:1;min-width:0;max-width:150px}
 #hero .txt .meta b{display:block;color:var(--txt);font-size:14px;margin-bottom:6px;letter-spacing:0}
 #hero .stage{height:auto;align-self:center;display:flex;flex-direction:column;justify-content:center;gap:16px;padding:70px 0}
 .hvid{aspect-ratio:16/9;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#fff}
@@ -217,12 +218,13 @@ table.spec td.v.hl .num{color:var(--accent);font-weight:700;font-size:14.5px}
 
    ── media / bigMedia 항목 3종 ──
    { type:"image",  src:"assets/images/x.gif", cap:"캡션" }   ← GIF도 image
+                    pos:"20% center" 추가하면 잘림 위치 조정 (작을수록 왼쪽이 더 보임)
    { type:"video",  src:"assets/videos/x.mp4", speed:2, cap:"캡션" }  ← speed 선택
    { type:"youtube", id:"영상ID", cap:"캡션" }
    ================================================================ */
 const SITE = {
   name: "임재훈",
-  hotspotHelper: true,
+  hotspotHelper: false,
   heroTitle: ["Mechanical", "Design", "Portfolio"],
   tagline: "Mechanical design engineer focused on structures, mechanisms, and flow.",
   heroVideos: ["avftUkOVd78", "Z2ezQZCM8-4"],
@@ -242,8 +244,9 @@ const PROJECTS = [
   subtitle:"발사체·TE·ECS 총 71.8t을 24륜으로 분담해 옮기는 자주식 모듈 운반차. 다축 분담과 대형 타이어로 접지압을 낮춰 발사장 포장면을 보호한다.",
   glb:"assets/models/SPMT-v6-v1.glb", modelYaw:0.5, modelPitch:-1.57, modelRoll:3.14,
   hotspots:[
-    { pos:[0,0,0], t:"적재 플랫폼", d:"TE·발사체·ECS를 통합 적재. 2대 1조 운용으로 하중을 절반씩 분담한다.", s:[["분담하중","352 kN"],["구성","2대 × 6축"]] },
-    { pos:[0,0,0], t:"타이어 (⌀1.39 m)", d:"대형 타이어의 넓은 접지면으로 지면 압력을 낮춰 노면을 보호한다.", s:[["륜하중","3.0 t"],["접지압","163 kPa"]] },
+    { pos:[0.1, -0.32, -0.25], t:"바퀴 (Wheel)", d:"2대 × 6축 × 2륜 = 24륜으로 총 하중을 분담한다. 대형 타이어의 넓은 접지면이 지면 압력을 낮춰 발사장 포장면을 보호한다.", s:[["륜하중","3.0 t"],["접지압","163 kPa"]] },
+    { pos:[-0.14, -0.01, -1.23], t:"PPU (동력·유압부)", d:"자주식 주행과 조향·서스펜션 유압을 공급하는 파워팩. 만재 상태에서 저속 정밀 이송을 담당한다.", s:[["주행","자주식"],["속도","~5 km/h"]] },
+    { pos:[-0.12, 0.02, 0.5], t:"Main Plate (적재 플랫폼)", d:"TE·발사체·ECS를 통합 적재하는 상판. 2대 1조로 하중을 절반씩 분담해 24륜으로 고르게 전달한다.", s:[["분담하중","352 kN"],["구성","2대 × 6축"]] },
   ],
   specs:[
     { cat:"하중" },
@@ -264,8 +267,8 @@ const PROJECTS = [
   ],
   latex:{ label:"타이어 접지압 검증", tex:"p=\\frac{P_t}{b\\cdot \\ell}=\\frac{29.4\\times10^{3}}{0.4\\times0.45}\\approx 163\\ \\text{kPa}" },
   media:[
-    { type:"image", src:"assets/images/SPMT_01.gif", cap:"SPMT 01 — Main Plate 변위" },
-    { type:"image", src:"assets/images/SPMT_02.gif", cap:"SPMT 02 — Main Plate 응력" },
+    { type:"image", src:"assets/images/SPMT_01.gif", pos:"20% center", cap:"SPMT 01 — Main Plate 변위" },
+    { type:"image", src:"assets/images/SPMT_02.gif", pos:"20% center", cap:"SPMT 02 — Main Plate 응력" },
   ],
 },
 {
@@ -273,9 +276,10 @@ const PROJECTS = [
   subtitle:"발사체를 수평에서 수직으로 세우는 기립 장치. ⌀300mm 유압 실린더와 3단 텔레스코픽 구조로 0°→90° 기립을 구현했다.",
   glb:"assets/models/Erector-v4.glb", modelYaw:0.4, modelPitch:1.57, modelRoll:1.57,
   hotspots:[
-    { pos:[0,1.0,0.5], t:"3단 텔레스코픽 스테이지", d:"신장 시 총 14.3m 스트로크를 만들어내는 다단 구조.", s:[["총 스트로크","14.3 m"],["구성","3단"]] },
-    { pos:[0.5,0,0.5], t:"유압 실린더", d:"기립 구동의 핵심. 힌지 모멘트를 감당하는 추력을 발생시킨다.", s:[["보어","⌀300 mm"],["기립각","0→90°"]] },
-    { pos:[-0.3,-0.9,0.5], t:"베이스 힌지", d:"기립 회전의 기준점이자 최대 하중 집중부. SF 2.0으로 검증.", s:[["SF","2.0"],["기준","NASA-STD-5001B"]] },
+    { pos:[0.26, 0.66, 0.69], t:"Holder (거치·클램프)", d:"발사체 동체를 잡아 지지하는 거치부. 기립 중과 연료 충전 중 발사체를 스트롱백에 고정한다.", s:[["역할","동체 클램프"],["구간","기립·충전"]] },
+    { pos:[-0.28, 0.61, -1.34], t:"Stopper (기립각 제한)", d:"기립 각도의 한계를 규정하고 90° 수직 위치에서 구조를 정지·고정하는 스토퍼.", s:[["기능","각도 제한"],["정지","90°"]] },
+    { pos:[-0.32, 0.37, -1.37], t:"Main Hinge (기립 힌지)", d:"0°→90° 기립 회전의 기준축이자 최대 하중 집중부. 힌지 휨모멘트 14.2 MN·m, 핀 전단 안전율 1.9로 검증했다.", s:[["힌지 모멘트","14.2 MN·m"],["핀 전단 SF","1.9"]] },
+    { pos:[-0.25, -0.1, -0.67], t:"3단 텔레스코픽 실린더", d:"기립 구동의 핵심. 3단 신장으로 총 14.3m 스트로크를 만들며 1본당 1.47MN 추력을 발생시킨다.", s:[["보어 / 행정","⌀300 / 14.3 m"],["추력","1.47 MN"]] },
   ],
   specs:[
     { cat:"하중" },
@@ -298,14 +302,15 @@ const PROJECTS = [
     { type:"image", src:"assets/images/Erector_01.gif", cap:"Erector 01 — 변위" },
     { type:"image", src:"assets/images/Erector_02.gif", cap:"Erector 02 — 응력" },
   ],
- },
+},
 {
   id:"te", no:"03", title:"Transporter Erector",
   subtitle:"Falcon 9 Block 5 건조질량 기준으로 설계 허용하중을 산정하고, ANSYS 위상 최적화로 트러스 토폴로지를 검증한 발사체 지지 구조물.",
   glb:"assets/models/TE-v7.glb", modelYaw:0.4, modelPitch:-1.57, modelRoll:0,
   hotspots:[
-    { pos:[0,0.8,0.5], t:"트러스 구조", d:"위상 최적화(Minimize Compliance, 질량 30~40% 제약) 결과를 Antares TEL 트러스와 교차 검증.", s:[["기법","Topology Opt."],["툴","ANSYS"]] },
-    { pos:[0,-0.5,0.6], t:"새들 지지부", d:"발사체 동체를 받치는 접촉부. 허용하중 기준으로 반력을 검증했다.", s:[["허용하중","565 kN"],["SF","2.0"]] },
+    { pos:[0.21, 1.34, -0.23], t:"바퀴 (이송부)", d:"발사체를 실은 TE를 지상에서 이송하는 주행부. SPMT·레일과 연계해 격납고에서 발사대까지 운반한다.", s:[["역할","지상 이송"],["연계","SPMT / Rail"]] },
+    { pos:[-0.18, -1.47, -0.2], t:"Upper Supporter (상부 새들)", d:"발사체 동체 상부를 받치는 지지부. 위상 최적화로 도출한 트러스가 하중을 분산한다.", s:[["구조","Topology 트러스"],["검증","ANSYS"]] },
+    { pos:[0.02, 1.49, 0.24], t:"Lower Supporter (하부 새들)", d:"발사체 하부를 받치는 주 지지부. 허용하중 기준으로 새들 반력을 검증했다.", s:[["주 새들 반력","171.5 kN"],["후방 반력","111.0 kN"]] },
   ],
   specs:[
     { cat:"하중" },
@@ -333,9 +338,8 @@ const PROJECTS = [
   subtitle:"KUKA KR210 기반 6축 로봇암과 싱글 토우 AFP 헤드. 6개 유닛의 유기적 구성으로 TPS 패널 프리프레그를 ±0.05mm 정밀도로 적층한다.",
   glb:"assets/models/AFP_Robot-v1.glb", modelYaw:0.6, modelPitch:-1.57, modelRoll:0,
   hotspots:[
-    { pos:[0,0.7,0.5], t:"Tension Control Unit", d:"PID 폐루프 제어로 적층 장력을 실시간 유지. 리니어 포텐셔미터 + 자기 분말 브레이크.", s:[["제어","PID 폐루프"],["역할","장력 유지"]] },
-    { pos:[0.5,-0.2,0.5], t:"Heating + Compaction", d:"레이저 열원으로 닙 포인트를 국소 가열하고 압착 롤러로 물리적 압착.", s:[["열원","Laser"],["방식","In-situ"]] },
-    { pos:[-0.5,0,0.5], t:"Clamp & Cut Unit", d:"단일 액추에이터로 고정과 절단을 통합 — 선 고정 후 절단 시퀀스.", s:[["구동","서보+공압"],["기능","고정·절단"]] },
+    { pos:[1.2, 0.66, -0.01], t:"AFP Head (적층 헤드)", d:"싱글 토우 헤드에 장력 제어·레이저 가열·압착·고정·절단 6개 유닛을 통합. 프리프레그를 ±0.05mm 정밀도로 in-situ 적층한다.", s:[["구성","6 Units"],["정밀도","±0.05 mm"]] },
+    { pos:[-0.57, 0.62, -0.08], t:"KUKA KR210 (6축 로봇암)", d:"헤드를 3차원 경로로 이송하는 6축 산업용 로봇암. DMU Kinematics로 0°/45°/90° ㄹ자 적층 경로를 검증했다.", s:[["작업 반경","2.7 m"],["경로","ㄹ자 (Track)"]] },
   ],
   specs:[
     { cat:"장비" },
@@ -351,9 +355,8 @@ const PROJECTS = [
     { k:"경로 생성", v:"ㄹ자 적층 (Track)" },
   ],
   media:[
-    { type:"video", src:"assets/videos/AFP_Head_03.mp4", cap:"AFP 적층 시뮬레이션" },
-    { type:"image", src:"assets/images/AFP_Head_01.png", cap:"헤드 유닛 (1)" },
-    { type:"image", src:"assets/images/AFP_Head_02.png", cap:"헤드 유닛 (2)" }
+    { type:"video", src:"assets/videos/AFP_01.mp4", cap:"AFP 적층 시뮬레이션" },
+    { type:"video", src:"assets/videos/AFP_02.mp4", cap:"헤드 유닛 동작" },
   ],
 },
 {
@@ -361,8 +364,9 @@ const PROJECTS = [
   subtitle:"TPS 패널 라인의 이송 축. 롤러 Revolute Joint 회전으로 벨트 이송을 구현하고, 랙앤피니언 진공 패킹 부스와 흡착 로봇암으로 AMR에 인계한다.",
   glb:"assets/models/Convey-v2.glb", modelYaw:0.3, modelPitch:-1.57, modelRoll:0,
   hotspots:[
-    { pos:[0.6,0.2,0.5], t:"구동 롤러", d:"Revolute Joint 회전으로 벨트 이송을 표현. 나선형 프로젝션으로 회전을 시각화.", s:[["조인트","Revolute"],["표현","나선 마킹"]] },
-    { pos:[-0.5,0.3,0.5], t:"진공 패킹 부스", d:"랙앤피니언 도어의 상하 개폐 Kinematics를 구현.", s:[["도어","Rack&Pinion"],["기능","진공 패킹"]] },
+    { pos:[-0.95, 0.36, -0.07], t:"Roller (구동 롤러)", d:"Revolute Joint 회전으로 벨트 이송을 구현. 표면 나선형 프로젝션으로 회전 방향을 시각화했다.", s:[["조인트","Revolute"],["표현","나선 마킹"]] },
+    { pos:[-1.41, -0.43, -0.19], t:"레벨링 풋 (Leveling Foot)", d:"라인 높이를 조절하고 바닥 수평을 맞추는 지지 발. 후속 공정 장비와 이송 높이를 정렬한다.", s:[["기능","높이 조절"],["역할","수평 정렬"]] },
+    { pos:[0.86, 0.13, -0.09], t:"구동 모터", d:"롤러를 회전시키는 구동원. 벨트 이송 속도는 롤러 각속도와 반경의 곱으로 결정된다.", s:[["구동","롤러 회전"],["속도","ω·r"]] },
   ],
   specs:[
     { cat:"이송" },
@@ -376,8 +380,8 @@ const PROJECTS = [
     { k:"동작 검증", v:"DMU Kinematics" },
   ],
   media:[
-    { type:"video", src:"assets/videos/Convey_01.mp4", cap:"진공 패킹 부스 동작" },
-    { type:"video", src:"assets/videos/Convey_02.mp4", cap:"라인 통합 시뮬레이션" }
+    { type:"video", src:"assets/videos/Conveyor_01.mp4", cap:"라인 통합 시뮬레이션" },
+    { type:"video", src:"assets/videos/Conveyor_02.mp4", cap:"진공 패킹 부스 동작" },
   ],
 },
 {
@@ -385,9 +389,8 @@ const PROJECTS = [
   subtitle:"전기차 실내·배터리 난방용 공기가열식 고전압 PTC 히터. 차종별로 흩어진 규격을 하나로 표준화하고, 제어기를 히터에 일체화해 크기·중량을 줄였다. 발열량 요구에 따라 히트코어 단(로드) 수를 늘리는 공용화 구조가 핵심이다.",
   glb:"assets/models/PTC-v5.glb", modelYaw:0.4, modelPitch:-1.57, modelRoll:0,
   hotspots:[
-    { pos:[0,0.7,0.5], t:"PTC 히터 (발열부)", d:"Fin Plate와 Heat Bar가 교대로 적층된 발열 코어. 필요 발열량에 맞춰 단(로드) 수를 늘려 용량을 조절하는 공용 설계다.", s:[["구성","Fin + Heat Bar"],["방식","공기가열식"]] },
-    { pos:[0.55,0.1,0.5], t:"제어기 일체화", d:"기존에 케이블로 분리돼 있던 제어기를 히터 본체에 통합. 파워보드·PCB를 하우징 안에 담아 차량 탑재성을 높였다.", s:[["통합","Controller 일체형"],["효과","탑재성 ↑"]] },
-    { pos:[-0.5,-0.2,0.5], t:"히트코어 (분리형·공용)", d:"차종별로 달랐던 코어를 분리형 공용 모듈로 표준화. 동일 코어를 여러 차종에 적용할 수 있다.", s:[["형식","분리형 공용"],["목적","차종 표준화"]] },
+    { pos:[0.11, 0.74, 1.07], t:"Heat Bar (발열부)", d:"Fin Plate와 교대로 적층되는 PTC 발열 소자. 필요 발열량에 맞춰 Heat Bar 단(로드) 수를 늘려 용량을 조절하는 공용 설계의 핵심이다.", s:[["구성","Fin + Heat Bar"],["방식","공기가열식"]] },
+    { pos:[-0.38, 1.33, 0.88], t:"Terminal (전원 단자)", d:"고전압 전원을 발열부에 연결하는 단자. 제어기 일체화로 커넥터를 본체에 통합해 차량 탑재성을 높였다.", s:[["역할","고전압 연결"],["통합","제어기 일체형"]] },
   ],
   specs:[
     { cat:"개발 목표" },
@@ -409,7 +412,10 @@ const PROJECTS = [
   ],
   latex:{ label:"발열량에 따른 필요 히트코어 단 수", tex:"\\dot{Q}=\\dot{m}\\,c_p\\,\\Delta T \\;\\Rightarrow\\; N_{core}=\\left\\lceil \\frac{\\dot{Q}}{\\dot{q}_{core}} \\right\\rceil" },
   media:[
-    { type:"video", src:"assets/videos/PTC.mp4", speed:1.25, cap:"제어기 일체형 PTC 히터 — 구조 · 조립" }
+    { type:"video", src:"assets/videos/PTC.mp4", speed:2.25, cap:"제어기 일체형 PTC 히터 — 구조 · 조립" },
+    { type:"image", src:"assets/images/PTC_assembly.png", cap:"제어기 일체형 최종 조립도" },
+    { type:"image", src:"assets/images/PTC_compare.png", cap:"분리형 vs 일체형 외관 비교" },
+    { type:"image", src:"assets/images/PTC_fem.png", cap:"성능해석 1/16 축소 모델" },
   ],
 },
 {
@@ -417,8 +423,8 @@ const PROJECTS = [
   subtitle:"마하 3 초음속 흡입구 공력 설계. 총 편향각 25° 제약에서 단일·이중·삼중 쐐기를 비교하고, pyBaram CFD로 전압력 회복률 향상을 검증했다.",
   layout:"media",
   bigMedia:[
-    { type:"image", src:"assets/images/FP_01.png", cap:"마하수 변화 — 단일/이중/삼중" },
-    { type:"image", src:"assets/images/FP_02.png", cap:"전압력 회복률 비교 — 단일/이중/삼중" }
+    { type:"image", src:"", cap:"마하수 컨투어 (pyBaram CFD)" },
+    { type:"image", src:"", cap:"쐐기 형상 비교 — 단일/이중/삼중" },
   ],
   specs:[
     { cat:"설계 조건" },
@@ -428,12 +434,12 @@ const PROJECTS = [
     { cat:"해석" },
     { k:"CFD 솔버", v:"pyBaram (압축성)" },
     { k:"격자 생성", v:"Gmsh" },
-    { k:"검증 결과", v:"단수↑ → 회복률↑ 재현 (3단일 때 전압력 회복률 54%, 질량유량 96%)" }
+    { k:"검증 결과", v:"단수↑ → 회복률↑ 재현" },
   ],
   latex:{ label:"경사충격파 θ-β-M 관계", tex:"\\tan\\delta=2\\cot\\beta\\,\\frac{M_1^2\\sin^2\\beta-1}{M_1^2(\\gamma+\\cos 2\\beta)+2}" },
   media:[
-    { type:"image", src:"assets/images/FP_03.png", cap:"Qualitative pictures of flow through oblique shock" },
-    { type:"image", src:"assets/images/FP_04.png", cap:"Theta-beta-M relationship" },
+    { type:"image", src:"", cap:"마하수 컨투어 (CFD)" },
+    { type:"image", src:"", cap:"쐐기 단수별 회복률 비교" },
   ],
 },
 ];
@@ -451,7 +457,7 @@ function mItem(m, extraCls=''){
     ? `<video src="${m.src}" autoplay loop muted playsinline preload="metadata" onplay="this.playbackRate=${m.speed || 1.0};"></video>`
     : `<div class="ph">영상(MP4) 경로를<br>CONFIG에 입력</div>`}<div class="cap">${m.cap}</div></div>`;
   return `<div class="mitem${extraCls}">${m.src
-    ? `<img src="${m.src}" alt="${m.cap}" loading="lazy">`
+    ? `<img src="${m.src}" alt="${m.cap}" loading="lazy"${m.pos?` style="object-position:${m.pos}"`:''}>`
     : `<div class="ph">이미지 경로를<br>CONFIG에 입력</div>`}<div class="cap">${m.cap}</div></div>`;
 }
 
