@@ -697,26 +697,78 @@ function initViewer(box, proj){
   card.querySelector('.cx').addEventListener('click', ()=>{ card.classList.remove('show'); V.hsEls.forEach(o=>o.e.classList.remove('on')); });
 
   if (SITE.hotspotHelper) {
-    const rc = new THREE.Raycaster(), m2 = new THREE.Vector2();
-    const tag = el('div','', '클릭: 좌표 찍기');
-    tag.style.cssText = 'position:absolute;top:14px;right:14px;z-index:20;font:12px/1.5 monospace;background:#ffcc00;color:#111;padding:8px 10px;border-radius:8px;max-width:70%;cursor:pointer';
+
+    const rc = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+
+    const tag = document.createElement("div");
+    tag.style.cssText = `
+        position:absolute;
+        top:15px;
+        right:15px;
+        z-index:30;
+        background:#FFC107;
+        color:#111;
+        padding:10px 12px;
+        border-radius:8px;
+        font:12px monospace;
+        white-space:pre-wrap;
+        cursor:pointer;
+        max-width:320px;
+    `;
+
+    tag.textContent = "모델을 클릭하세요";
     box.appendChild(tag);
-    ren.domElement.style.cursor = 'crosshair';
-    ren.domElement.addEventListener('click', (ev)=>{
-      const r = ren.domElement.getBoundingClientRect();
-      m2.x = ((ev.clientX-r.left)/r.width)*2-1;
-      m2.y = -((ev.clientY-r.top)/r.height)*2+1;
-      rc.setFromCamera(m2, cam);
-      const hit = rc.intersectObject(pivot, true)[0];
-      if(!hit){ tag.textContent='빈 곳 — 모델 표면을 클릭'; return; }
-      const p = pivot.worldToLocal(hit.point.clone());
-      const s = v=>Math.round(v*100)/100;
-      const txt = `pos:[${s(p.x)}, ${s(p.y)}, ${s(p.z)}]`;
-      tag.textContent = txt + '  (클릭하면 복사)';
-      tag.onclick = ()=>{ navigator.clipboard?.writeText(txt); tag.textContent='복사됨! ' + txt; };
-      console.log('[hotspot]', txt);
+
+    ren.domElement.style.cursor = "crosshair";
+
+    ren.domElement.addEventListener("click", (e) => {
+
+        if (!V.model) {
+            tag.textContent = "모델 로딩중...";
+            return;
+        }
+
+        const rect = ren.domElement.getBoundingClientRect();
+
+        mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+        mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+        rc.setFromCamera(mouse, cam);
+
+        const hit = rc.intersectObject(V.model, true)[0];
+
+        if (!hit) {
+            tag.textContent = "모델을 클릭하세요";
+            return;
+        }
+
+        const p = V.pivot.worldToLocal(hit.point.clone());
+
+        const f = (n) => Number(n.toFixed(2));
+
+        const output =
+`{
+    pos: [${f(p.x)}, ${f(p.y)}, ${f(p.z)}],
+    t: "",
+    d: "",
+    s: [
+        ["", ""],
+        ["", ""]
+    ]
+},`;
+
+        console.log(output);
+
+        navigator.clipboard.writeText(output);
+
+        tag.textContent =
+`✅ 복사 완료!
+
+${output}`;
     });
-  }
+
+}
 
   const sec = box.closest('section');
   if (window.gsap && window.ScrollTrigger) {
