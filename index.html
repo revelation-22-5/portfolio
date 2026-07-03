@@ -14,7 +14,7 @@
 
 <style>
 /* ============================================================
-   DESIGN TOKENS — 색은 이 5개만 사용 (선생님 지정 팔레트)
+   DESIGN TOKENS
    ============================================================ */
 :root{
   --bg:      #F5F4F0;
@@ -22,6 +22,13 @@
   --sub:     #6B6B6B;
   --accent:  #2B4C7E;
   --line:    #E5E3DD;
+
+  /* ── C안: 3D 뷰어 안쪽만 어둡게 (밝은 모델이 묻히지 않도록) ── */
+  --viewer-bg:   #1C2128;  /* 뷰어 배경 (어두운 차콜) */
+  --viewer-line: #2E3540;  /* 뷰어 안 테두리/구분선 */
+  --viewer-txt:  #C4CCD6;  /* 뷰어 안 밝은 글자 */
+  --viewer-sub:  #7F8A99;  /* 뷰어 안 흐린 글자 */
+  --viewer-accent:#7FA8D8; /* 뷰어 안 포인트(밝은 파랑) */
 
   --font-body:'Pretendard Variable',Pretendard,-apple-system,sans-serif;
   --font-disp:'Pretendard Variable',Pretendard,sans-serif;
@@ -36,7 +43,7 @@ body{
   font-family:var(--font-body);
   -webkit-font-smoothing:antialiased;
   line-height:1.6;
-  font-variant-numeric:tabular-nums; /* 카운트업 숫자 흔들림 방지 */
+  font-variant-numeric:tabular-nums;
 }
 ::selection{background:var(--accent);color:var(--bg)}
 
@@ -130,71 +137,71 @@ section{border-bottom:1px solid var(--line)}
   display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:28px;
   align-items:start;
 }
-/* 왼쪽 — 3D 뷰어 (sticky: 오른쪽 내용이 흐르는 동안 고정) */
+/* 왼쪽 — 3D 뷰어 (sticky) ── C안: 어두운 배경 ── */
 .viewer-wrap{position:sticky;top:70px}
 .viewer{
   position:relative;height:calc(100vh - 140px);min-height:480px;
-  background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;
+  background:var(--viewer-bg);border:1px solid var(--line);border-radius:14px;overflow:hidden;
 }
 .viewer canvas{display:block;width:100%;height:100%}
 .viewer .vhud{
   position:absolute;top:14px;left:16px;pointer-events:none;
-  font-family:var(--font-mono);font-size:10px;color:var(--sub);letter-spacing:.08em;line-height:1.9;
+  font-family:var(--font-mono);font-size:10px;color:var(--viewer-sub);letter-spacing:.08em;line-height:1.9;
 }
-.viewer .vhud .k{color:var(--accent)}
+.viewer .vhud .k{color:var(--viewer-accent)}
 .viewer .vctrl{position:absolute;bottom:14px;left:16px;display:flex;gap:6px}
 .viewer .vctrl button{
-  font-family:var(--font-mono);font-size:10.5px;color:var(--sub);
-  background:var(--bg);border:1px solid var(--line);border-radius:6px;
+  font-family:var(--font-mono);font-size:10.5px;color:var(--viewer-sub);
+  background:rgba(255,255,255,.04);border:1px solid var(--viewer-line);border-radius:6px;
   padding:6px 11px;cursor:pointer;transition:.2s;
 }
-.viewer .vctrl button:hover{color:var(--accent);border-color:var(--accent)}
+.viewer .vctrl button:hover{color:var(--viewer-accent);border-color:var(--viewer-accent)}
 .viewer .vload{
   position:absolute;inset:0;display:grid;place-items:center;
-  font-family:var(--font-mono);font-size:11px;color:var(--sub);letter-spacing:.14em;
-  background:#fff;transition:opacity .5s;
+  font-family:var(--font-mono);font-size:11px;color:var(--viewer-sub);letter-spacing:.14em;
+  background:var(--viewer-bg);transition:opacity .5s;
 }
 .viewer .vload.off{opacity:0;pointer-events:none}
 
-/* 핫스팟 */
+/* 핫스팟 ── C안: 어두운 뷰어 위에서 밝게 ── */
 .hs{
   position:absolute;width:24px;height:24px;transform:translate(-50%,-50%);cursor:pointer;z-index:6;
 }
 .hs .dot{
   width:24px;height:24px;border-radius:50%;
-  border:1.5px solid var(--accent);background:rgba(43,76,126,.08);
-  display:grid;place-items:center;color:var(--accent);font-size:15px;font-weight:400;
+  border:1.5px solid var(--viewer-accent);background:rgba(127,168,216,.14);
+  display:grid;place-items:center;color:var(--viewer-accent);font-size:15px;font-weight:400;
   transition:.2s;
 }
 .hs .dot::before{
   content:'';position:absolute;inset:-5px;border-radius:50%;
-  border:1px solid var(--accent);opacity:.3;animation:hsPulse 2.6s infinite;
+  border:1px solid var(--viewer-accent);opacity:.35;animation:hsPulse 2.6s infinite;
 }
-@keyframes hsPulse{0%{transform:scale(.85);opacity:.4}100%{transform:scale(1.55);opacity:0}}
-.hs:hover .dot,.hs.on .dot{background:var(--accent);color:#fff}
+@keyframes hsPulse{0%{transform:scale(.85);opacity:.45}100%{transform:scale(1.55);opacity:0}}
+.hs:hover .dot,.hs.on .dot{background:var(--viewer-accent);color:var(--viewer-bg)}
 
-/* 핫스팟 상세 카드 (뷰어 안 우하단) */
+/* 핫스팟 상세 카드 ── C안: 어두운 카드 ── */
 .hs-card{
   position:absolute;right:14px;bottom:14px;width:min(320px,72%);
-  background:var(--bg);border:1px solid var(--line);border-radius:12px;
-  padding:16px 18px;z-index:8;box-shadow:0 12px 30px rgba(26,26,26,.08);
+  background:rgba(28,33,40,.92);border:1px solid var(--viewer-line);border-radius:12px;
+  padding:16px 18px;z-index:8;box-shadow:0 12px 30px rgba(0,0,0,.35);backdrop-filter:blur(6px);
   opacity:0;transform:translateY(8px);pointer-events:none;transition:.28s;
 }
 .hs-card.show{opacity:1;transform:none;pointer-events:auto}
-.hs-card .ci{font-family:var(--font-mono);font-size:10px;color:var(--accent);letter-spacing:.14em}
-.hs-card h4{font-size:15px;font-weight:700;margin:4px 0 6px}
-.hs-card p{font-size:12.5px;color:var(--sub);line-height:1.6}
+.hs-card .ci{font-family:var(--font-mono);font-size:10px;color:var(--viewer-accent);letter-spacing:.14em}
+.hs-card h4{font-size:15px;font-weight:700;margin:4px 0 6px;color:var(--viewer-txt)}
+.hs-card p{font-size:12.5px;color:var(--viewer-sub);line-height:1.6}
 .hs-card .cs{display:flex;gap:8px;margin-top:10px}
-.hs-card .cs div{flex:1;background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 10px}
-.hs-card .cs .l{font-family:var(--font-mono);font-size:9.5px;color:var(--sub);letter-spacing:.06em}
-.hs-card .cs .v{font-family:var(--font-mono);font-size:13.5px;color:var(--accent);font-weight:600;margin-top:2px}
+.hs-card .cs div{flex:1;background:rgba(255,255,255,.04);border:1px solid var(--viewer-line);border-radius:8px;padding:8px 10px}
+.hs-card .cs .l{font-family:var(--font-mono);font-size:9.5px;color:var(--viewer-sub);letter-spacing:.06em}
+.hs-card .cs .v{font-family:var(--font-mono);font-size:13.5px;color:var(--viewer-accent);font-weight:600;margin-top:2px}
 .hs-card .cx{
   position:absolute;top:10px;right:12px;border:none;background:none;cursor:pointer;
-  color:var(--sub);font-size:14px;line-height:1;
+  color:var(--viewer-sub);font-size:14px;line-height:1;
 }
-.hs-card .cx:hover{color:var(--txt)}
+.hs-card .cx:hover{color:var(--viewer-txt)}
 
-/* 오른쪽 — 설계표 + 미디어 */
+/* 오른쪽 — 설계표 + 미디어 (밝은 톤 유지) */
 .panel{display:flex;flex-direction:column;gap:22px}
 .card{
   background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px 28px;
@@ -205,7 +212,7 @@ section{border-bottom:1px solid var(--line)}
 }
 .card .ct::before{content:'';width:16px;height:1px;background:var(--accent)}
 
-/* 설계 사양표 — 도면 표제란 감성 */
+/* 설계 사양표 */
 table.spec{width:100%;border-collapse:collapse}
 table.spec td{padding:10px 4px;border-bottom:1px solid var(--line);font-size:13.5px;vertical-align:baseline}
 table.spec tr:last-child td{border-bottom:none}
@@ -238,7 +245,7 @@ table.spec td.v .num{color:var(--txt)}
   font-family:var(--font-mono);font-size:10px;color:var(--sub);letter-spacing:.1em;text-align:center;line-height:1.8;
 }
 
-/* 등장 애니메이션 (페이드업) */
+/* 등장 애니메이션 */
 .rise{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
 .rise.in{opacity:1;transform:none}
 
@@ -293,7 +300,7 @@ table.spec td.v .num{color:var(--txt)}
 </head>
 <body>
 
-<!-- ============ 좌측 사이드바 (JS가 목차 자동 생성) ============ -->
+<!-- ============ 좌측 사이드바 ============ -->
 <nav class="side">
   <div class="who">
     <div class="nm">임재훈</div>
@@ -303,7 +310,7 @@ table.spec td.v .num{color:var(--txt)}
   <div class="foot">MECHANICAL DESIGN<br>CATIA V5 · ANSYS · CFD</div>
 </nav>
 
-<main id="main"><!-- JS가 CONFIG 기반으로 섹션 자동 생성 --></main>
+<main id="main"></main>
 
 <!-- ============ 라이브러리 ============ -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -315,26 +322,13 @@ table.spec td.v .num{color:var(--txt)}
 
 <script>
 /* ================================================================
-   ★★★ CONFIG — 선생님이 편집하는 곳은 여기뿐입니다 ★★★
-
-   · glb        : GLB 파일 경로. GitHub 레포에 함께 올리고 상대경로 권장
-                  (예: "assets/models/Erector.glb"). 비우면 자리표시 모델.
-   · modelYaw   : 초기 회전(라디안). 모델 방향이 이상하면 조정.
-   ── 페이지별 세부 조정 (선택, 안 쓰면 기본값) ──
-   · cam        : 카메라 시작 위치 [x,y,z]. 예: cam:[3.5, 0.8, 4]
-                  (멀리서 보고 싶으면 숫자 키움, 위에서 보려면 y 키움)
-   · rot        : 스크롤 회전량. 기본 1.6 (= 0.8바퀴).
-                  예: rot:0.6 은 살짝만, rot:3 은 1.5바퀴 회전.
-   · hotspots   : pos는 [x,y,z] 3D 좌표 (모델 정규화 후 대략 -1.5~1.5 범위)
-   · specs      : 설계표 행. num:true면 화면 진입 시 카운트업.
-   · latex      : 대표 수식 (KaTeX 문법, 백슬래시 두 번 \\)
-   · media      : {type:'image', src, cap} 또는 {type:'youtube', id, cap}
+   CONFIG
    ================================================================ */
 const SITE = {
   name: "임재훈",
   heroTitle: ["Mechanical", "Design", "Portfolio"],
   tagline: "발사대 GSE부터 초음속 흡입구까지 — CATIA 설계와 수치 검증으로 완성한 7개의 프로젝트.",
-  heroVideos: [            // 히어로에 위아래로 배치되는 유튜브 영상 (ID만)
+  heroVideos: [
     "avftUkOVd78",
     "Z2ezQZCM8-4",
   ],
@@ -343,9 +337,9 @@ const SITE = {
     { b: "ANSYS",    s: "STRUCTURAL / TOPOLOGY" },
     { b: "pyBaram",  s: "COMPRESSIBLE CFD" },
   ],
-  tel:   "+82 10-7765-7210",           // ← 실제 번호로 교체
-  email: "pgup111@naver.com",     // ← 실제 이메일로 교체
-  photo: "",                           // ← "assets/images/me.jpg" 식으로 교체
+  tel:   "+82 10-7765-7210",
+  email: "pgup111@naver.com",
+  photo: "",
 };
 
 const PROJECTS = [
@@ -477,8 +471,8 @@ const PROJECTS = [
 {
   id:"intake", no:"07", title:"Supersonic Air Intake",
   subtitle:"마하 3 초음속 흡입구 공력 설계. 총 편향각 25° 제약에서 단일·이중·삼중 쐐기를 비교하고, pyBaram CFD로 전압력 회복률 향상을 검증했다.",
-  layout:"media",              // ← 3D 뷰어 대신 왼쪽에 큰 미디어 배치
-  bigMedia:[                   // 왼쪽 큰 영역에 위→아래 순서로 표시
+  layout:"media",
+  bigMedia:[
     { type:"image", src:"", cap:"마하수 컨투어 (pyBaram CFD)" },
     { type:"image", src:"", cap:"쐐기 형상 비교 — 단일/이중/삼중" },
   ],
@@ -500,13 +494,11 @@ const PROJECTS = [
 /* ================== CONFIG 끝 — 아래는 엔진 ================== */
 
 
-/* ---------- 섹션 DOM 생성 ---------- */
 const main = document.getElementById('main');
 const toc  = document.getElementById('toc');
 
 function el(tag, cls, html){ const e=document.createElement(tag); if(cls)e.className=cls; if(html!=null)e.innerHTML=html; return e; }
 
-/* 미디어 아이템 HTML (image/gif = type:"image", 유튜브 = type:"youtube") */
 function mItem(m, extraCls=''){
   if(m.type==='youtube') return `<div class="mitem${extraCls}">${m.id
     ? `<iframe src="https://www.youtube.com/embed/${m.id}" allowfullscreen loading="lazy"></iframe>`
@@ -516,7 +508,6 @@ function mItem(m, extraCls=''){
     : `<div class="ph">이미지 경로를<br>CONFIG에 입력</div>`}<div class="cap">${m.cap}</div></div>`;
 }
 
-/* 히어로 */
 const hero = el('section','', `
   <div id="hero">
     <div class="txt">
@@ -534,7 +525,6 @@ const hero = el('section','', `
 hero.id='top';
 main.appendChild(hero);
 
-/* 프로젝트 섹션들 */
 PROJECTS.forEach(p=>{
   const sec = el('section','proj'); sec.id = p.id;
   sec.innerHTML = `
@@ -588,7 +578,6 @@ PROJECTS.forEach(p=>{
   main.appendChild(sec);
 });
 
-/* Contact */
 const contact = el('section','',`
   <div id="contact">
     <div class="cwrap">
@@ -605,7 +594,6 @@ const contact = el('section','',`
 contact.id='contact-sec';
 main.appendChild(contact);
 
-/* 목차 */
 const tocItems = [
   ...PROJECTS.map(p=>({id:p.id,no:p.no,t:p.title})),
   {id:'contact-sec',no:'08',t:'Contact'},
@@ -616,7 +604,6 @@ tocItems.forEach(i=>{
   const li = el('li'); li.appendChild(a); toc.appendChild(li);
 });
 
-/* ---------- Lenis 부드러운 스크롤 ---------- */
 let lenis = null;
 if (window.Lenis) {
   lenis = new Lenis({ duration: 1.15, smoothWheel: true });
@@ -631,7 +618,6 @@ document.querySelectorAll('#toc a').forEach(a=>{
   });
 });
 
-/* ---------- 스크롤 스파이 ---------- */
 const spy = new IntersectionObserver(es=>{
   es.forEach(e=>{
     if(!e.isIntersecting) return;
@@ -641,7 +627,6 @@ const spy = new IntersectionObserver(es=>{
 },{rootMargin:'-45% 0px -50% 0px'});
 tocItems.forEach(i=>{ const s=document.getElementById(i.id); if(s) spy.observe(s); });
 
-/* ---------- 페이드업 등장 ---------- */
 const riser = new IntersectionObserver(es=>{
   es.forEach((e)=>{ if(e.isIntersecting){
     e.target.classList.add('in'); riser.unobserve(e.target);
@@ -651,7 +636,6 @@ document.querySelectorAll('.rise').forEach((r,i)=>{
   r.style.transitionDelay = `${(i%4)*70}ms`; riser.observe(r);
 });
 
-/* ---------- 숫자 카운트업 ---------- */
 const counter = new IntersectionObserver(es=>{
   es.forEach(e=>{
     if(!e.isIntersecting) return;
@@ -668,7 +652,6 @@ const counter = new IntersectionObserver(es=>{
 },{threshold:.6});
 document.querySelectorAll('[data-count]').forEach(n=>counter.observe(n));
 
-/* ---------- KaTeX 수식 렌더 ---------- */
 window.addEventListener('load', ()=>{
   if(!window.katex) return;
   document.querySelectorAll('.ktx').forEach(k=>{
@@ -677,11 +660,9 @@ window.addEventListener('load', ()=>{
   });
 });
 
-/* ---------- 3D 뷰어 엔진 ----------
-   각 뷰어는 화면에 보일 때만 초기화·렌더 (성능/컨텍스트 보호) */
 const VIEWERS = [];
 
-function makePlaceholder(){ // GLB 없을 때 자리표시 모델
+function makePlaceholder(){
   const g = new THREE.Group();
   const mat = new THREE.MeshStandardMaterial({color:0x9aa3ad, metalness:.7, roughness:.45});
   const acc = new THREE.MeshStandardMaterial({color:0x2B4C7E, metalness:.5, roughness:.5});
@@ -695,7 +676,7 @@ function makePlaceholder(){ // GLB 없을 때 자리표시 모델
 function initViewer(box, proj){
   const scene = new THREE.Scene();
   const cam = new THREE.PerspectiveCamera(42, box.clientWidth/box.clientHeight, .05, 100);
-  const camHome = proj.cam || [2.6, 1.2, 3.4];   // 섹션별 카메라 위치 (CONFIG cam)
+  const camHome = proj.cam || [2.6, 1.2, 3.4];
   cam.position.set(...camHome);
   const ren = new THREE.WebGLRenderer({antialias:true, alpha:true});
   ren.setSize(box.clientWidth, box.clientHeight);
@@ -703,14 +684,14 @@ function initViewer(box, proj){
   ren.outputEncoding = THREE.sRGBEncoding;
   box.prepend(ren.domElement);
 
-  scene.add(new THREE.HemisphereLight(0xffffff, 0xd8d5cd, .95));
-  const key = new THREE.DirectionalLight(0xffffff, .9); key.position.set(4,6,4); scene.add(key);
-  const rim = new THREE.DirectionalLight(0xbcc8da, .5); rim.position.set(-4,2,-3); scene.add(rim);
+  scene.add(new THREE.HemisphereLight(0xffffff, 0x30363f, 1.0));
+  const key = new THREE.DirectionalLight(0xffffff, 1.0); key.position.set(4,6,4); scene.add(key);
+  const rim = new THREE.DirectionalLight(0x9fb4d4, .6); rim.position.set(-4,2,-3); scene.add(rim);
 
   const pivot = new THREE.Group(); scene.add(pivot);
   const loadEl = box.querySelector('.vload');
 
-  function fit(obj){ // 모델 정규화: 중심 이동 + 크기 통일
+  function fit(obj){
     const bb = new THREE.Box3().setFromObject(obj);
     const size = bb.getSize(new THREE.Vector3()), ctr = bb.getCenter(new THREE.Vector3());
     const s = 2.2/Math.max(size.x,size.y,size.z);
@@ -732,14 +713,12 @@ function initViewer(box, proj){
 
   const ctl = new THREE.OrbitControls(cam, ren.domElement);
   ctl.enableDamping = true; ctl.dampingFactor = .08;
-  ctl.enableZoom = false; ctl.enablePan = false;   // 휠은 페이지 스크롤에 양보
+  ctl.enableZoom = false; ctl.enablePan = false;
 
-  /* 스크롤 회전 vs 사용자 조작 조율 */
   const V = { scene, cam, ren, pivot, ctl, box, proj,
               scrollRot:0, userHold:0, active:false, hsEls:[] };
   ren.domElement.addEventListener('pointerdown', ()=>V.userHold = performance.now()+4000);
 
-  /* 줌/리셋 버튼 */
   box.querySelectorAll('.vctrl button').forEach(b=>{
     b.addEventListener('click', ()=>{
       const dir = cam.position.clone().normalize();
@@ -750,7 +729,6 @@ function initViewer(box, proj){
     });
   });
 
-  /* 핫스팟 생성 */
   const card = box.querySelector('.hs-card');
   proj.hotspots.forEach((h,idx)=>{
     const e = el('div','hs',`<div class="dot">+</div>`);
@@ -762,14 +740,13 @@ function initViewer(box, proj){
       card.querySelector('p').textContent = h.d;
       card.querySelector('.cs').innerHTML = h.s.map(x=>`<div><div class="l">${x[0]}</div><div class="v">${x[1]}</div></div>`).join('');
       card.classList.add('show');
-      V.userHold = performance.now()+8000; // 카드 읽는 동안 회전 정지
+      V.userHold = performance.now()+8000;
     });
   });
   card.querySelector('.cx').addEventListener('click', ()=>{
     card.classList.remove('show'); V.hsEls.forEach(o=>o.e.classList.remove('on'));
   });
 
-  /* 스크롤 진행도 → 회전 (GSAP 없으면 스크롤 리스너 폴백) */
   const sec = box.closest('section');
   if (window.gsap && window.ScrollTrigger) {
     gsap.registerPlugin(ScrollTrigger);
@@ -794,7 +771,6 @@ function initViewer(box, proj){
   return V;
 }
 
-/* 화면에 보일 때만 활성화 */
 const vio = new IntersectionObserver(es=>{
   es.forEach(e=>{
     const box = e.target;
@@ -809,7 +785,6 @@ const vio = new IntersectionObserver(es=>{
 },{rootMargin:'150px'});
 document.querySelectorAll('.viewer').forEach(b=>vio.observe(b));
 
-/* ---------- 공용 렌더 루프 ---------- */
 const _v3 = new THREE.Vector3();
 function loop(){
   requestAnimationFrame(loop);
@@ -818,13 +793,11 @@ function loop(){
     if(!V.active) return;
     const userBusy = now < V.userHold;
     if(!userBusy){
-      // 스크롤 회전 + 미세 자동 회전을 부드럽게 추종
       const target = (V.proj.modelYaw||0) + V.scrollRot;
       V.pivot.rotation.y += (target - V.pivot.rotation.y) * .06;
     }
     V.ctl.update();
     V.ren.render(V.scene, V.cam);
-    // 핫스팟 2D 투영
     V.hsEls.forEach(o=>{
       _v3.set(...o.h.pos).applyMatrix4(V.pivot.matrixWorld).project(V.cam);
       const x = (_v3.x*.5+.5)*V.box.clientWidth, y = (-_v3.y*.5+.5)*V.box.clientHeight;
