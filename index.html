@@ -5,17 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>임재훈 — Mechanical Design Portfolio</title>
 
-<!-- 폰트 -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
-
-<!-- KaTeX (수식) -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
 
 <style>
-/* ============================================================
-   DESIGN TOKENS
-   ============================================================ */
 :root{
   --bg:      #F5F4F0;
   --txt:     #1A1A1A;
@@ -23,17 +17,15 @@
   --accent:  #2B4C7E;
   --line:    #E5E3DD;
 
-  /* ── C안: 3D 뷰어 안쪽만 어둡게 (밝은 모델이 묻히지 않도록) ── */
-  --viewer-bg:   #1C2128;  /* 뷰어 배경 (어두운 차콜) */
-  --viewer-line: #2E3540;  /* 뷰어 안 테두리/구분선 */
-  --viewer-txt:  #C4CCD6;  /* 뷰어 안 밝은 글자 */
-  --viewer-sub:  #7F8A99;  /* 뷰어 안 흐린 글자 */
-  --viewer-accent:#7FA8D8; /* 뷰어 안 포인트(밝은 파랑) */
+  --viewer-bg:   #1C2128;
+  --viewer-line: #2E3540;
+  --viewer-txt:  #C4CCD6;
+  --viewer-sub:  #7F8A99;
+  --viewer-accent:#7FA8D8;
 
   --font-body:'Pretendard Variable',Pretendard,-apple-system,sans-serif;
   --font-disp:'Pretendard Variable',Pretendard,sans-serif;
   --font-mono:'Pretendard Variable',Pretendard,sans-serif;
-
   --sidebar-w: 240px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
@@ -41,15 +33,11 @@ html{scroll-behavior:auto}
 body{
   background:var(--bg);color:var(--txt);
   font-family:var(--font-body);
-  -webkit-font-smoothing:antialiased;
-  line-height:1.6;
+  -webkit-font-smoothing:antialiased;line-height:1.6;
   font-variant-numeric:tabular-nums;
 }
 ::selection{background:var(--accent);color:var(--bg)}
 
-/* ============================================================
-   좌측 고정 사이드바 (스크롤 스파이)
-   ============================================================ */
 nav.side{
   position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);
   padding:44px 32px;border-right:1px solid var(--line);
@@ -59,10 +47,7 @@ nav.side{
 .side .who .nm{font-family:var(--font-disp);font-weight:800;font-size:20px;letter-spacing:-.01em}
 .side .who .rl{font-family:var(--font-mono);font-size:10.5px;color:var(--sub);letter-spacing:.14em;margin-top:4px}
 .side ol{list-style:none;display:flex;flex-direction:column;gap:2px}
-.side ol a{
-  display:flex;align-items:baseline;gap:10px;text-decoration:none;
-  padding:7px 10px;border-radius:6px;transition:.25s;
-}
+.side ol a{display:flex;align-items:baseline;gap:10px;text-decoration:none;padding:7px 10px;border-radius:6px;transition:.25s}
 .side ol a .no{font-family:var(--font-mono);font-size:10px;color:var(--sub);width:18px}
 .side ol a .tt{font-size:13px;color:var(--sub);font-weight:500;transition:.25s}
 .side ol a:hover .tt{color:var(--txt)}
@@ -71,122 +56,52 @@ nav.side{
 .side ol a.on .no{color:var(--accent)}
 .side .foot{margin-top:auto;font-family:var(--font-mono);font-size:10px;color:var(--sub);letter-spacing:.06em;line-height:1.8}
 
-/* ============================================================
-   메인 영역
-   ============================================================ */
 main{margin-left:var(--sidebar-w)}
 section{border-bottom:1px solid var(--line)}
 
-/* ---------- 히어로 ---------- */
-#hero{
-  min-height:100vh;display:grid;grid-template-columns:1fr 1fr;
-  align-items:center;padding:0 56px;position:relative;overflow:hidden;
-}
-#hero .txt h1{
-  font-family:var(--font-disp);font-weight:800;
-  font-size:clamp(44px,5.6vw,84px);line-height:1.02;letter-spacing:-.03em;
-}
+#hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:0 56px;position:relative;overflow:hidden}
+#hero .txt h1{font-family:var(--font-disp);font-weight:800;font-size:clamp(44px,5.6vw,84px);line-height:1.02;letter-spacing:-.03em}
 #hero .txt h1 .accent{color:var(--accent)}
-#hero .txt .tag{margin-top:22px;font-size:16px;color:var(--sub);max-width:40ch}
-#hero .txt .meta{
-  margin-top:36px;display:flex;gap:26px;
-  font-family:var(--font-mono);font-size:11px;color:var(--sub);letter-spacing:.08em;
-}
-#hero .txt .meta b{display:block;color:var(--txt);font-size:14px;margin-bottom:2px}
-#hero .stage{
-  height:auto;align-self:center;
-  display:flex;flex-direction:column;justify-content:center;gap:16px;
-  padding:70px 0;
-}
-.hvid{
-  aspect-ratio:16/9;border-radius:14px;overflow:hidden;
-  border:1px solid var(--line);background:#fff;
-}
+#hero .txt .tag{margin-top:22px;font-size:16px;color:var(--sub);max-width:42ch}
+#hero .txt .meta{margin-top:36px;display:flex;gap:26px;font-family:var(--font-mono);font-size:11px;color:var(--sub);letter-spacing:.06em;line-height:1.7}
+#hero .txt .meta b{display:block;color:var(--txt);font-size:14px;margin-bottom:6px;letter-spacing:0}
+#hero .stage{height:auto;align-self:center;display:flex;flex-direction:column;justify-content:center;gap:16px;padding:70px 0}
+.hvid{aspect-ratio:16/9;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#fff}
 .hvid iframe{width:100%;height:100%;border:none;display:block}
-/* 3D 없는 섹션(layout:"media")의 왼쪽 큰 미디어 영역 */
 .bigmedia{position:sticky;top:70px;display:flex;flex-direction:column;gap:14px}
 .bigmedia .mitem{aspect-ratio:16/9}
-#hero .scroll-hint{
-  position:absolute;bottom:30px;left:56px;
-  font-family:var(--font-mono);font-size:10px;letter-spacing:.22em;color:var(--sub);
-  display:flex;align-items:center;gap:10px;
-}
+#hero .scroll-hint{position:absolute;bottom:30px;left:56px;font-family:var(--font-mono);font-size:10px;letter-spacing:.22em;color:var(--sub);display:flex;align-items:center;gap:10px}
 .scroll-hint .bar{width:1px;height:34px;background:var(--line);position:relative;overflow:hidden}
-.scroll-hint .bar::after{
-  content:'';position:absolute;left:0;top:-40%;width:100%;height:40%;
-  background:var(--accent);animation:drip 2s ease-in-out infinite;
-}
+.scroll-hint .bar::after{content:'';position:absolute;left:0;top:-40%;width:100%;height:40%;background:var(--accent);animation:drip 2s ease-in-out infinite}
 @keyframes drip{to{top:110%}}
 
-/* ---------- 프로젝트 섹션 공통 템플릿 ---------- */
 .proj{padding:0 56px}
 .proj .inner{min-height:158vh;padding:80px 0 90px}
 .proj header.ph{margin-bottom:34px;max-width:900px}
-.proj .eyebrow{
-  font-family:var(--font-mono);font-size:11px;letter-spacing:.18em;
-  color:var(--accent);display:flex;align-items:center;gap:12px;margin-bottom:14px;
-}
+.proj .eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:.18em;color:var(--accent);display:flex;align-items:center;gap:12px;margin-bottom:14px}
 .proj .eyebrow::after{content:'';flex:0 0 44px;height:1px;background:var(--accent);opacity:.4}
-.proj h2{
-  font-family:var(--font-disp);font-weight:700;
-  font-size:clamp(28px,3.2vw,46px);letter-spacing:-.02em;line-height:1.08;
-}
+.proj h2{font-family:var(--font-disp);font-weight:700;font-size:clamp(28px,3.2vw,46px);letter-spacing:-.02em;line-height:1.08}
 .proj .sub{margin-top:10px;color:var(--sub);font-size:15px;max-width:62ch}
 
-.proj .grid{
-  display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:28px;
-  align-items:start;
-}
-/* 왼쪽 — 3D 뷰어 (sticky) ── C안: 어두운 배경 ── */
+.proj .grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:28px;align-items:start}
 .viewer-wrap{position:sticky;top:70px}
-.viewer{
-  position:relative;height:calc(100vh - 140px);min-height:480px;
-  background:var(--viewer-bg);border:1px solid var(--line);border-radius:14px;overflow:hidden;
-}
+.viewer{position:relative;height:calc(100vh - 140px);min-height:480px;background:var(--viewer-bg);border:1px solid var(--line);border-radius:14px;overflow:hidden}
 .viewer canvas{display:block;width:100%;height:100%}
-.viewer .vhud{
-  position:absolute;top:14px;left:16px;pointer-events:none;
-  font-family:var(--font-mono);font-size:10px;color:var(--viewer-sub);letter-spacing:.08em;line-height:1.9;
-}
+.viewer .vhud{position:absolute;top:14px;left:16px;pointer-events:none;font-family:var(--font-mono);font-size:10px;color:var(--viewer-sub);letter-spacing:.08em;line-height:1.9}
 .viewer .vhud .k{color:var(--viewer-accent)}
 .viewer .vctrl{position:absolute;bottom:14px;right:16px;display:flex;gap:6px}
-.viewer .vctrl button{
-  font-family:var(--font-mono);font-size:10.5px;color:var(--viewer-sub);
-  background:rgba(255,255,255,.04);border:1px solid var(--viewer-line);border-radius:6px;
-  padding:6px 11px;cursor:pointer;transition:.2s;
-}
+.viewer .vctrl button{font-family:var(--font-mono);font-size:10.5px;color:var(--viewer-sub);background:rgba(255,255,255,.04);border:1px solid var(--viewer-line);border-radius:6px;padding:6px 11px;cursor:pointer;transition:.2s}
 .viewer .vctrl button:hover{color:var(--viewer-accent);border-color:var(--viewer-accent)}
-.viewer .vload{
-  position:absolute;inset:0;display:grid;place-items:center;
-  font-family:var(--font-mono);font-size:11px;color:var(--viewer-sub);letter-spacing:.14em;
-  background:var(--viewer-bg);transition:opacity .5s;
-}
+.viewer .vload{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--font-mono);font-size:11px;color:var(--viewer-sub);letter-spacing:.14em;background:var(--viewer-bg);transition:opacity .5s}
 .viewer .vload.off{opacity:0;pointer-events:none}
 
-/* 핫스팟 ── C안: 어두운 뷰어 위에서 밝게 ── */
-.hs{
-  position:absolute;width:24px;height:24px;transform:translate(-50%,-50%);cursor:pointer;z-index:6;
-}
-.hs .dot{
-  width:24px;height:24px;border-radius:50%;
-  border:1.5px solid var(--viewer-accent);background:rgba(127,168,216,.14);
-  display:grid;place-items:center;color:var(--viewer-accent);font-size:15px;font-weight:400;
-  transition:.2s;
-}
-.hs .dot::before{
-  content:'';position:absolute;inset:-5px;border-radius:50%;
-  border:1px solid var(--viewer-accent);opacity:.35;animation:hsPulse 2.6s infinite;
-}
+.hs{position:absolute;width:24px;height:24px;transform:translate(-50%,-50%);cursor:pointer;z-index:6}
+.hs .dot{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--viewer-accent);background:rgba(127,168,216,.14);display:grid;place-items:center;color:var(--viewer-accent);font-size:15px;font-weight:400;transition:.2s}
+.hs .dot::before{content:'';position:absolute;inset:-5px;border-radius:50%;border:1px solid var(--viewer-accent);opacity:.35;animation:hsPulse 2.6s infinite}
 @keyframes hsPulse{0%{transform:scale(.85);opacity:.45}100%{transform:scale(1.55);opacity:0}}
 .hs:hover .dot,.hs.on .dot{background:var(--viewer-accent);color:var(--viewer-bg)}
 
-/* 핫스팟 상세 카드 ── C안: 어두운 카드 ── */
-.hs-card{
-  position:absolute;left:14px;bottom:14px;width:min(320px,72%);
-  background:rgba(28,33,40,.92);border:1px solid var(--viewer-line);border-radius:12px;
-  padding:16px 18px;z-index:8;box-shadow:0 12px 30px rgba(0,0,0,.35);backdrop-filter:blur(6px);
-  opacity:0;transform:translateY(8px);pointer-events:none;transition:.28s;
-}
+.hs-card{position:absolute;left:14px;bottom:14px;width:min(320px,72%);background:rgba(28,33,40,.92);border:1px solid var(--viewer-line);border-radius:12px;padding:16px 18px;z-index:8;box-shadow:0 12px 30px rgba(0,0,0,.35);backdrop-filter:blur(6px);opacity:0;transform:translateY(8px);pointer-events:none;transition:.28s}
 .hs-card.show{opacity:1;transform:none;pointer-events:auto}
 .hs-card .ci{font-family:var(--font-mono);font-size:10px;color:var(--viewer-accent);letter-spacing:.14em}
 .hs-card h4{font-size:15px;font-weight:700;margin:4px 0 6px;color:var(--viewer-txt)}
@@ -195,86 +110,56 @@ section{border-bottom:1px solid var(--line)}
 .hs-card .cs div{flex:1;background:rgba(255,255,255,.04);border:1px solid var(--viewer-line);border-radius:8px;padding:8px 10px}
 .hs-card .cs .l{font-family:var(--font-mono);font-size:9.5px;color:var(--viewer-sub);letter-spacing:.06em}
 .hs-card .cs .v{font-family:var(--font-mono);font-size:13.5px;color:var(--viewer-accent);font-weight:600;margin-top:2px}
-.hs-card .cx{
-  position:absolute;top:10px;right:12px;border:none;background:none;cursor:pointer;
-  color:var(--viewer-sub);font-size:14px;line-height:1;
-}
+.hs-card .cx{position:absolute;top:10px;right:12px;border:none;background:none;cursor:pointer;color:var(--viewer-sub);font-size:14px;line-height:1}
 .hs-card .cx:hover{color:var(--viewer-txt)}
 
-/* 오른쪽 — 설계표 + 미디어 (밝은 톤 유지) */
 .panel{display:flex;flex-direction:column;gap:22px}
-.card{
-  background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px 28px;
-}
-.card .ct{
-  font-family:var(--font-mono);font-size:10.5px;letter-spacing:.18em;color:var(--sub);
-  display:flex;align-items:center;gap:10px;margin-bottom:18px;text-transform:uppercase;
-}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px 28px}
+.card .ct{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.18em;color:var(--sub);display:flex;align-items:center;gap:10px;margin-bottom:18px;text-transform:uppercase}
 .card .ct::before{content:'';width:16px;height:1px;background:var(--accent)}
 
-/* 설계 사양표 */
+/* ── 개선된 설계 사양표: 카테고리 그룹 + 값 강조 ── */
 table.spec{width:100%;border-collapse:collapse}
-table.spec td{padding:10px 4px;border-bottom:1px solid var(--line);font-size:13.5px;vertical-align:baseline}
+table.spec td{padding:9px 4px;font-size:13.5px;vertical-align:baseline;border-bottom:1px solid var(--line)}
 table.spec tr:last-child td{border-bottom:none}
-table.spec td.k{color:var(--sub);width:46%}
-table.spec td.v{font-family:var(--font-mono);text-align:right;font-weight:500}
+table.spec td.k{color:var(--sub);width:52%}
+table.spec td.v{font-family:var(--font-mono);text-align:right;font-weight:500;white-space:nowrap}
 table.spec td.v .unit{color:var(--sub);font-size:11px;margin-left:3px}
 table.spec td.v .num{color:var(--txt)}
-.formula{
-  margin-top:16px;padding:16px 14px;background:var(--bg);
-  border:1px solid var(--line);border-radius:10px;overflow-x:auto;
+table.spec tr.cat td{
+  border-bottom:none;padding:16px 4px 6px;
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.16em;
+  color:var(--accent);text-transform:uppercase;font-weight:700;
 }
+table.spec tr.cat:first-child td{padding-top:2px}
+table.spec td.v.hl .num{color:var(--accent);font-weight:700;font-size:14.5px}
+
+.formula{margin-top:16px;padding:16px 14px;background:var(--bg);border:1px solid var(--line);border-radius:10px;overflow-x:auto}
 .formula .fl{font-family:var(--font-mono);font-size:9.5px;color:var(--sub);letter-spacing:.1em;margin-bottom:8px}
 .formula .ktx{font-size:14px}
 
-/* 미디어 갤러리 */
 .media-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.mitem{
-  aspect-ratio:16/10;border-radius:10px;border:1px solid var(--line);overflow:hidden;
-  position:relative;background:var(--bg);
-}
+.mitem{aspect-ratio:16/10;border-radius:10px;border:1px solid var(--line);overflow:hidden;position:relative;background:var(--bg)}
 .mitem.wide{grid-column:1/3;aspect-ratio:16/8.4}
 .mitem img,.mitem iframe,.mitem video{width:100%;height:100%;object-fit:cover;border:none;display:block}
-.mitem .cap{
-  position:absolute;left:0;right:0;bottom:0;padding:8px 10px 7px;
-  font-family:var(--font-mono);font-size:9.5px;letter-spacing:.05em;color:#fff;
-  background:linear-gradient(0deg,rgba(26,26,26,.65),transparent);
-}
-.mitem .ph{
-  position:absolute;inset:0;display:grid;place-items:center;
-  font-family:var(--font-mono);font-size:10px;color:var(--sub);letter-spacing:.1em;text-align:center;line-height:1.8;
-}
+.mitem .cap{position:absolute;left:0;right:0;bottom:0;padding:8px 10px 7px;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.05em;color:#fff;background:linear-gradient(0deg,rgba(26,26,26,.65),transparent)}
+.mitem .ph{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--font-mono);font-size:10px;color:var(--sub);letter-spacing:.1em;text-align:center;line-height:1.8}
 
-/* 등장 애니메이션 */
 .rise{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
 .rise.in{opacity:1;transform:none}
 
-/* ---------- Contact ---------- */
 #contact{min-height:88vh;display:grid;place-items:center;padding:80px 56px;border-bottom:none}
 #contact .cwrap{display:grid;grid-template-columns:auto 1fr;gap:56px;align-items:center;max-width:860px;width:100%}
-#contact .photo{
-  width:220px;height:280px;border-radius:14px;border:1px solid var(--line);
-  background:#fff;overflow:hidden;display:grid;place-items:center;
-  font-family:var(--font-mono);font-size:10px;color:var(--sub);letter-spacing:.1em;
-}
+#contact .photo{width:220px;height:280px;border-radius:14px;border:1px solid var(--line);background:#fff;overflow:hidden;display:grid;place-items:center;font-family:var(--font-mono);font-size:10px;color:var(--sub);letter-spacing:.1em}
 #contact .photo img{width:100%;height:100%;object-fit:cover}
 #contact h2{font-family:var(--font-disp);font-weight:800;font-size:clamp(30px,3.4vw,50px);letter-spacing:-.02em}
 #contact .cl{margin-top:26px;display:flex;flex-direction:column;gap:12px}
-#contact .cl a{
-  display:flex;align-items:baseline;gap:16px;text-decoration:none;color:var(--txt);
-  font-size:16px;padding-bottom:10px;border-bottom:1px solid var(--line);transition:.2s;
-}
+#contact .cl a{display:flex;align-items:baseline;gap:16px;text-decoration:none;color:var(--txt);font-size:16px;padding-bottom:10px;border-bottom:1px solid var(--line);transition:.2s}
 #contact .cl a .lb{font-family:var(--font-mono);font-size:10px;color:var(--sub);letter-spacing:.14em;width:52px}
 #contact .cl a:hover{color:var(--accent)}
 
-/* ---------- 모바일 ---------- */
 @media(max-width:1020px){
-  nav.side{
-    position:sticky;top:0;bottom:auto;width:100%;height:auto;
-    flex-direction:row;align-items:center;gap:18px;
-    padding:14px 20px;border-right:none;border-bottom:1px solid var(--line);
-    overflow-x:auto;
-  }
+  nav.side{position:sticky;top:0;bottom:auto;width:100%;height:auto;flex-direction:row;align-items:center;gap:18px;padding:14px 20px;border-right:none;border-bottom:1px solid var(--line);overflow-x:auto}
   .side .who{margin:0;flex:0 0 auto}
   .side .who .rl{display:none}
   .side ol{flex-direction:row;gap:4px}
@@ -283,7 +168,7 @@ table.spec td.v .num{color:var(--txt)}
   .side .foot{display:none}
   main{margin-left:0}
   #hero{grid-template-columns:1fr;padding:0 22px;gap:0}
-  #hero .stage{height:52vh;order:-1;margin-top:60px}
+  #hero .stage{height:auto;order:-1;margin-top:60px}
   .proj{padding:0 22px}
   .proj .inner{min-height:auto;padding:60px 0}
   .proj .grid{grid-template-columns:1fr}
@@ -300,19 +185,14 @@ table.spec td.v .num{color:var(--txt)}
 </head>
 <body>
 
-<!-- ============ 좌측 사이드바 ============ -->
 <nav class="side">
-  <div class="who">
-    <div class="nm">임재훈</div>
-    <div class="rl">PORTFOLIO</div>
-  </div>
+  <div class="who"><div class="nm">임재훈</div><div class="rl">PORTFOLIO</div></div>
   <ol id="toc"></ol>
   <div class="foot">MECHANICAL DESIGN<br>CATIA V5 · ANSYS · CFD</div>
 </nav>
 
 <main id="main"></main>
 
-<!-- ============ 라이브러리 ============ -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/DRACOLoader.js"></script>
@@ -324,35 +204,32 @@ table.spec td.v .num{color:var(--txt)}
 
 <script>
 /* ================================================================
-   CONFIG
-   ── 모델 방향 조정 (각 프로젝트 glb 줄, 단위: 라디안) ──
-   · modelYaw   : 좌우 회전 (스크롤 자동회전이 도는 축)
-   · modelPitch : 앞뒤로 눕히기.  1.57=앞90° / -1.57=뒤90° / 3.14=180°
-   · modelRoll  : 좌우로 굴리기
-   값 안 맞으면 이 세 개를 1.57 / -1.57 / 3.14 / 0 조합으로 바꿔보며 맞춤.
-   · cam        : 카메라 위치 [x,y,z] 수동지정. 안 쓰면 자동으로 꽉 차게 배치.
+   CONFIG — 편집은 여기서만.
+
+   ── 모델 방향 (glb 줄, 라디안) ──
+   modelYaw / modelPitch / modelRoll : 1.57=90°, -1.57=-90°, 3.14=180°, 0
+
+   ── specs(설계표) 행 종류 ──
+   { cat:"하중" }                              → 카테고리 구분선(그룹 제목)
+   { k:"항목", v:71.8, unit:"t", num:true }    → 숫자(카운트업). num 없으면 그대로 표기
+   { k:"항목", v:"텍스트" }                     → 문자열 값
+   hl:true 추가하면 그 값이 강조(파란 굵게)
+
    ── media / bigMedia 항목 3종 ──
-   · 이미지·GIF : { type:"image",   src:"assets/images/x.jpg", cap:"캡션" }
-   · MP4 자동재생: { type:"video",   src:"assets/videos/x.mp4", cap:"캡션" }
-                  (GIF 대신 권장 — 소리없이 자동 반복, 고화질·가벼움)
-   · 유튜브      : { type:"youtube", id:"영상ID", cap:"캡션" }
+   { type:"image",  src:"assets/images/x.gif", cap:"캡션" }   ← GIF도 image
+   { type:"video",  src:"assets/videos/x.mp4", speed:2, cap:"캡션" }  ← speed 선택
+   { type:"youtube", id:"영상ID", cap:"캡션" }
    ================================================================ */
 const SITE = {
   name: "임재훈",
-  /* ★ 핫스팟 좌표 찍기 도우미: 켜려면 true.
-     true면 뷰어에서 모델 표면을 클릭 → 그 지점의 pos:[x,y,z]가 화면에 뜸 → 복사해서 hotspots에 사용.
-     좌표 다 찍었으면 다시 false로 꺼두기. */
   hotspotHelper: false,
   heroTitle: ["Mechanical", "Design", "Portfolio"],
   tagline: "Mechanical design engineer focused on structures, mechanisms, and flow.",
-  heroVideos: [
-    "avftUkOVd78",
-    "Z2ezQZCM8-4",
-  ],
+  heroVideos: ["avftUkOVd78", "Z2ezQZCM8-4"],
   meta: [
     { b: "CATIA V5", s: "Part Design<br>GSD<br>DMU Kinematics" },
     { b: "ANSYS",    s: "Static<br>Dynamic<br>Thermal" },
-    { b: "CFD",      s: "pyBaram<br>Gmsh" }
+    { b: "CFD",      s: "pyBaram<br>Gmsh" },
   ],
   tel:   "+82 10-7765-7210",
   email: "pgup111@naver.com",
@@ -369,18 +246,26 @@ const PROJECTS = [
     { pos:[0.7,-0.45,0.55], t:"타이어 (⌀1.39 m)", d:"대형 타이어의 넓은 접지면으로 지면 압력을 낮춰 노면을 보호한다.", s:[["륜하중","3.0 t"],["접지압","163 kPa"]] },
   ],
   specs:[
-    { k:"총 운반 하중", v:71.8, unit:"t", num:true },
-    { k:"환산 하중", v:704, unit:"kN", num:true },
-    { k:"휠 구성", v:"2대 × 6축 × 2륜 = 24륜" },
-    { k:"타이어당 하중", v:3.0, unit:"t", num:true },
+    { cat:"하중" },
+    { k:"총 운반 하중", v:71.8, unit:"t", num:true, hl:true },
+    { k:"1대당 분담 하중", v:"35.9 t (352 kN)" },
+    { k:"축당 하중", v:6.0, unit:"t", num:true },
+    { k:"타이어당 하중", v:"3.0 t (29.4 kN)" },
+    { cat:"지지" },
     { k:"타이어 직경", v:"⌀1.39", unit:"m" },
-    { k:"타이어 접지압", v:163, unit:"kPa", num:true },
+    { k:"타이어 접지압", v:163, unit:"kPa", num:true, hl:true },
+    { k:"서스펜션 행정", v:"±150", unit:"mm" },
+    { cat:"구동" },
+    { k:"주행 속도 (만재)", v:"~5", unit:"km/h" },
+    { k:"등판 능력", v:"~3", unit:"%" },
+    { cat:"조향" },
+    { k:"조향 방식", v:"전축 유압 조향" },
+    { k:"최대 조향각", v:"±90° (제자리 선회)" },
   ],
   latex:{ label:"타이어 접지압 검증", tex:"p=\\frac{P_t}{b\\cdot \\ell}=\\frac{29.4\\times10^{3}}{0.4\\times0.45}\\approx 163\\ \\text{kPa}" },
   media:[
-    { type:"video", src:"assets/videos/PTC.mp4", speed : 2.25, cap:"Erector 결합 및 기립" },
-    { type:"image", src:"assets/images/SPMT_01.gif", cap:"Main Plate의 변위" },
-    { type:"image", src:"assets/images/SPMT_02.gif", cap:"Main Plate의 응력 변화" },
+    { type:"image", src:"assets/images/SPMT_01.gif", cap:"SPMT 01 — Main Plate 변위" },
+    { type:"image", src:"assets/images/SPMT_02.gif", cap:"SPMT 02 — Main Plate 응력" },
   ],
 },
 {
@@ -393,17 +278,25 @@ const PROJECTS = [
     { pos:[-0.3,-0.9,0.5], t:"베이스 힌지", d:"기립 회전의 기준점이자 최대 하중 집중부. SF 2.0으로 검증.", s:[["SF","2.0"],["기준","NASA-STD-5001B"]] },
   ],
   specs:[
-    { k:"유압 실린더 보어", v:"⌀300", unit:"mm" },
-    { k:"총 스트로크 (3단)", v:14.3, unit:"m", num:true },
-    { k:"기립 각도", v:"0° → 90°" },
-    { k:"안전계수 (SF)", v:2.0, num:true },
-    { k:"설계 기준", v:"NASA-STD-5001B" },
+    { cat:"하중" },
+    { k:"합산 기립 질량", v:"66.8 t (655 kN)" },
+    { k:"합성 무게중심 (힌지 기준)", v:"21.7", unit:"m" },
+    { k:"풍하중 (50 m/s)", v:"1,531", unit:"Pa" },
+    { k:"힌지 휨모멘트 (0°)", v:"14.2 MN·m", hl:true },
+    { cat:"부재" },
+    { k:"주 현재 (각관)", v:"□-200×200×12 · SM490" },
+    { k:"복재 / 사재 (각관)", v:"□-120×120×10 · SM490" },
+    { k:"복재 좌굴 안전율", v:2.6, num:true },
+    { cat:"구조" },
+    { k:"실린더 추력 (1본)", v:"1.47", unit:"MN" },
+    { k:"실린더경 / 행정", v:"⌀300 / 14.3 m", hl:true },
+    { cat:"지지" },
+    { k:"힌지 핀 전단 S.F", v:1.9, num:true },
   ],
-  latex:{ label:"힌지 모멘트 평형", tex:"M_{hinge}=W\\,L_{cg}\\cos\\theta = F_{cyl}\\cdot d(\\theta)" },
+  latex:{ label:"힌지 휨모멘트", tex:"M = W\\cdot L,\\quad L=\\frac{\\sum W_i L_i}{\\sum W_i},\\quad q=\\tfrac{1}{2}\\rho V^2 C_d" },
   media:[
-    { type:"video", src:"assets/videos/PTC.mp4", speed : 2.25, cap:"Erector 결합 및 기립" },
-    { type:"image", src:"assets/images/Erector_01.gif", cap:"Erector의 변위" },
-    { type:"image", src:"assets/images/Erector_02.gif", cap:"Erector의 응력 변화" },
+    { type:"image", src:"assets/images/Erector_01.gif", cap:"Erector 01 — 변위" },
+    { type:"image", src:"assets/images/Erector_02.gif", cap:"Erector 02 — 응력" },
   ],
 },
 {
@@ -415,18 +308,24 @@ const PROJECTS = [
     { pos:[0,-0.5,0.6], t:"새들 지지부", d:"발사체 동체를 받치는 접촉부. 허용하중 기준으로 반력을 검증했다.", s:[["허용하중","565 kN"],["SF","2.0"]] },
   ],
   specs:[
-    { k:"대상 발사체", v:"Falcon 9 Block 5" },
-    { k:"발사체 건조질량", v:28799, unit:"kg", num:true },
+    { cat:"하중" },
+    { k:"적재 발사체 자중", v:"28.8 t (282.5 kN)" },
+    { k:"TE 자중 (물량 산출)", v:"38 t (373 kN)" },
+    { k:"발사체 무게중심", v:"저부 23.9 m" },
+    { cat:"구조" },
+    { k:"최대 휨모멘트", v:"8,590", unit:"kN·m", hl:true },
+    { k:"주 현재 안전율 (S.F)", v:2.05, num:true, hl:true },
+    { cat:"지지" },
+    { k:"주 새들 반력", v:"171.5", unit:"kN" },
+    { k:"후방 새들 반력", v:"111.0", unit:"kN" },
+    { cat:"설계 기준" },
     { k:"설계 허용하중", v:565, unit:"kN", num:true },
-    { k:"안전계수 (SF)", v:2.0, num:true },
-    { k:"설계 기준", v:"NASA-STD-5001B" },
-    { k:"구조 검증", v:"ANSYS 위상 최적화 → 트러스" },
+    { k:"기준 규격", v:"NASA-STD-5001B" },
   ],
-  latex:{ label:"설계 허용하중", tex:"P_{allow}=m_{dry}\\,g\\times SF = 28{,}799\\times9.81\\times2.0 \\approx 565\\ \\text{kN}" },
+  latex:{ label:"설계 허용하중 · 안전율", tex:"P_{allow}=m_{dry}\\,g\\,SF \\approx 565\\ \\text{kN},\\quad S.F=W_R\\frac{\\sigma_y}{\\sigma}" },
   media:[
-    { type:"video", src:"assets/videos/PTC.mp4", speed : 2.25, cap:"Erector 결합 및 기립" },
-    { type:"image", src:"assets/images/TE_01.gif", cap:"TE의 변위" },
-    { type:"image", src:"assets/images/TE_02.gif", cap:"TE의 응력 변화" },
+    { type:"image", src:"assets/images/TE_01.gif", cap:"TE 01 — 변위" },
+    { type:"image", src:"assets/images/TE_02.gif", cap:"TE 02 — 응력" },
   ],
 },
 {
@@ -439,17 +338,21 @@ const PROJECTS = [
     { pos:[-0.5,0,0.5], t:"Clamp & Cut Unit", d:"단일 액추에이터로 고정과 절단을 통합 — 선 고정 후 절단 시퀀스.", s:[["구동","서보+공압"],["기능","고정·절단"]] },
   ],
   specs:[
+    { cat:"장비" },
     { k:"참조 로봇", v:"KUKA KR210" },
-    { k:"반복 정밀도", v:"±0.05", unit:"mm" },
     { k:"작업 반경", v:2.7, unit:"m", num:true },
-    { k:"헤드 구성", v:"6 Units" },
+    { k:"반복 정밀도", v:"±0.05", unit:"mm", hl:true },
+    { cat:"헤드 구성" },
+    { k:"유닛 수", v:"6 Units" },
     { k:"적층 각도", v:"0° / 45° / 90°" },
-    { k:"동작 검증", v:"DMU Kinematics (ㄹ자 경로)" },
+    { k:"열원 / 압착", v:"Laser + Compaction Roller" },
+    { cat:"검증" },
+    { k:"동작 검증", v:"DMU Kinematics" },
+    { k:"경로 생성", v:"ㄹ자 적층 (Track)" },
   ],
-  latex:{ label:"적층 경로 동기화", tex:"\\theta_i(t)\\ \\text{직접 각도 부여} \\Rightarrow \\text{IK 미지원 극복}" },
   media:[
-    { type:"youtube", id:"", cap:"AFP 적층 시뮬레이션" },
-    { type:"image", src:"", cap:"6유닛 구성도" },
+    { type:"video", src:"assets/videos/AFP_01.mp4", cap:"AFP 적층 시뮬레이션" },
+    { type:"video", src:"assets/videos/AFP_02.mp4", cap:"헤드 유닛 동작" },
   ],
 },
 {
@@ -461,31 +364,55 @@ const PROJECTS = [
     { pos:[-0.5,0.3,0.5], t:"진공 패킹 부스", d:"랙앤피니언 도어의 상하 개폐 Kinematics를 구현.", s:[["도어","Rack&Pinion"],["기능","진공 패킹"]] },
   ],
   specs:[
+    { cat:"이송" },
     { k:"이송 방식", v:"롤러 Revolute 회전" },
     { k:"높이 조절", v:"레벨링 풋" },
-    { k:"패킹 부스 도어", v:"랙앤피니언 상하 개폐" },
+    { cat:"패킹 부스" },
+    { k:"도어 구동", v:"랙앤피니언 상하 개폐" },
+    { k:"기능", v:"진공 패킹" },
+    { cat:"인계 / 검증" },
     { k:"후단 인계", v:"흡착 로봇암 → AMR" },
     { k:"동작 검증", v:"DMU Kinematics" },
   ],
-  latex:{ label:"벨트 이송 속도", tex:"v_{belt}=\\omega_{roller}\\times r" },
   media:[
-    { type:"youtube", id:"", cap:"라인 통합 시뮬레이션" },
-    { type:"image", src:"", cap:"컨베이어 어셈블리" },
+    { type:"video", src:"assets/videos/Conveyor_01.mp4", cap:"라인 통합 시뮬레이션" },
+    { type:"video", src:"assets/videos/Conveyor_02.mp4", cap:"진공 패킹 부스 동작" },
   ],
 },
 {
-  id:"ptc", no:"06", title:"PTC",
-  subtitle:"※ 이 섹션의 소개·제원은 선생님이 채워야 합니다 — CONFIG의 ptc 항목을 수정하세요.",
+  id:"ptc", no:"06", title:"PTC Heater — 고전압 공기가열식", navTitle:"PTC",
+  subtitle:"전기차 실내·배터리 난방용 공기가열식 고전압 PTC 히터. 차종별로 흩어진 규격을 하나로 표준화하고, 제어기를 히터에 일체화해 크기·중량을 줄였다. 발열량 요구에 따라 히트코어 단(로드) 수를 늘리는 공용화 구조가 핵심이다.",
   glb:"assets/models/PTC-v5.glb", modelYaw:0.4, modelPitch:-1.57, modelRoll:0,
   hotspots:[
-    { pos:[0,0.5,0.5], t:"핫스팟 예시", d:"CONFIG에서 pos 좌표와 설명을 채우세요.", s:[["항목","값"],["항목","값"]] },
+    { pos:[0,0.7,0.5], t:"PTC 히터 (발열부)", d:"Fin Plate와 Heat Bar가 교대로 적층된 발열 코어. 필요 발열량에 맞춰 단(로드) 수를 늘려 용량을 조절하는 공용 설계다.", s:[["구성","Fin + Heat Bar"],["방식","공기가열식"]] },
+    { pos:[0.55,0.1,0.5], t:"제어기 일체화", d:"기존에 케이블로 분리돼 있던 제어기를 히터 본체에 통합. 파워보드·PCB를 하우징 안에 담아 차량 탑재성을 높였다.", s:[["통합","Controller 일체형"],["효과","탑재성 ↑"]] },
+    { pos:[-0.5,-0.2,0.5], t:"히트코어 (분리형·공용)", d:"차종별로 달랐던 코어를 분리형 공용 모듈로 표준화. 동일 코어를 여러 차종에 적용할 수 있다.", s:[["형식","분리형 공용"],["목적","차종 표준화"]] },
   ],
   specs:[
-    { k:"항목 1", v:"값 입력" },
-    { k:"항목 2", v:0, unit:"단위", num:true },
+    { cat:"개발 목표" },
+    { k:"용도", v:"EV 실내·배터리 난방" },
+    { k:"방식", v:"공기가열식 고전압 PTC" },
+    { k:"핵심 컨셉", v:"차종 표준화 · 공용화", hl:true },
+    { cat:"구조 (일체형)" },
+    { k:"제어기", v:"히터 일체형 (통합)" },
+    { k:"히트코어", v:"분리형 공용 모듈" },
+    { k:"발열부 구성", v:"Fin Plate + Heat Bar + Terminal" },
+    { k:"주요 부품", v:"하우징·PCB·파워보드·히트싱크" },
+    { cat:"형상 (일체형)" },
+    { k:"본체 크기", v:"200 × 256 × 210", unit:"mm" },
+    { k:"커넥터부", v:"28 × 46 × 64", unit:"mm" },
+    { k:"기존 분리형 대비", v:"크기·중량 감소", hl:true },
+    { cat:"성능 해석" },
+    { k:"해석 모델", v:"Full → 1/16 축소 (대칭)", hl:true },
+    { k:"단순화", v:"필렛·미소간극 생략" },
   ],
-  latex:{ label:"대표 수식", tex:"F=ma" },
-  media:[ { type:"video", src:"assets/videos/PTC.mp4", cap:"Parameter 변환" } ],
+  latex:{ label:"발열량에 따른 필요 히트코어 단 수", tex:"\\dot{Q}=\\dot{m}\\,c_p\\,\\Delta T \\;\\Rightarrow\\; N_{core}=\\left\\lceil \\frac{\\dot{Q}}{\\dot{q}_{core}} \\right\\rceil" },
+  media:[
+    { type:"video", src:"assets/videos/PTC.mp4", speed:2.25, cap:"제어기 일체형 PTC 히터 — 구조 · 조립" },
+    { type:"image", src:"assets/images/PTC_assembly.png", cap:"제어기 일체형 최종 조립도" },
+    { type:"image", src:"assets/images/PTC_compare.png", cap:"분리형 vs 일체형 외관 비교" },
+    { type:"image", src:"assets/images/PTC_fem.png", cap:"성능해석 1/16 축소 모델" },
+  ],
 },
 {
   id:"intake", no:"07", title:"Supersonic Air Intake",
@@ -496,14 +423,16 @@ const PROJECTS = [
     { type:"image", src:"", cap:"쐐기 형상 비교 — 단일/이중/삼중" },
   ],
   specs:[
-    { k:"설계 마하수", v:3.0, num:true },
+    { cat:"설계 조건" },
+    { k:"설계 마하수", v:3.0, num:true, hl:true },
     { k:"총 편향각 제약", v:"≤ 25°" },
     { k:"쐐기 구성", v:"단일 23° / 이중 11+13° / 삼중 7+8+9°" },
+    { cat:"해석" },
     { k:"CFD 솔버", v:"pyBaram (압축성)" },
     { k:"격자 생성", v:"Gmsh" },
     { k:"검증 결과", v:"단수↑ → 회복률↑ 재현" },
   ],
-  latex:{ label:"경사충격파 관계", tex:"\\tan\\delta=2\\cot\\beta\\,\\frac{M_1^2\\sin^2\\beta-1}{M_1^2(\\gamma+\\cos 2\\beta)+2}" },
+  latex:{ label:"경사충격파 θ-β-M 관계", tex:"\\tan\\delta=2\\cot\\beta\\,\\frac{M_1^2\\sin^2\\beta-1}{M_1^2(\\gamma+\\cos 2\\beta)+2}" },
   media:[
     { type:"image", src:"", cap:"마하수 컨투어 (CFD)" },
     { type:"image", src:"", cap:"쐐기 단수별 회복률 비교" },
@@ -512,10 +441,8 @@ const PROJECTS = [
 ];
 /* ================== CONFIG 끝 — 아래는 엔진 ================== */
 
-
 const main = document.getElementById('main');
 const toc  = document.getElementById('toc');
-
 function el(tag, cls, html){ const e=document.createElement(tag); if(cls)e.className=cls; if(html!=null)e.innerHTML=html; return e; }
 
 function mItem(m, extraCls=''){
@@ -528,6 +455,15 @@ function mItem(m, extraCls=''){
   return `<div class="mitem${extraCls}">${m.src
     ? `<img src="${m.src}" alt="${m.cap}" loading="lazy">`
     : `<div class="ph">이미지 경로를<br>CONFIG에 입력</div>`}<div class="cap">${m.cap}</div></div>`;
+}
+
+function specRow(s){
+  if(s.cat) return `<tr class="cat"><td colspan="2">${s.cat}</td></tr>`;
+  const valInner = s.num
+    ? `<span class="num" data-count="${s.v}">${typeof s.v==='number'&&s.v%1?'0.0':'0'}</span>`
+    : `<span class="num">${s.v}</span>`;
+  return `<tr><td class="k">${s.k}</td>
+    <td class="v${s.hl?' hl':''}">${valInner}${s.unit?`<span class="unit">${s.unit}</span>`:''}</td></tr>`;
 }
 
 const hero = el('section','', `
@@ -579,12 +515,7 @@ PROJECTS.forEach(p=>{
       <div class="panel">
         <div class="card rise">
           <div class="ct">Design Specifications</div>
-          <table class="spec">${p.specs.map(s=>`
-            <tr><td class="k">${s.k}</td>
-                <td class="v">${s.num
-                  ? `<span class="num" data-count="${s.v}">${typeof s.v==='number'&&s.v%1?'0.0':'0'}</span>`
-                  : `<span class="num">${s.v}</span>`}${s.unit?`<span class="unit">${s.unit}</span>`:''}</td></tr>`).join('')}
-          </table>
+          <table class="spec">${p.specs.map(specRow).join('')}</table>
           ${p.latex?`<div class="formula"><div class="fl">${p.latex.label}</div><div class="ktx" data-tex="${p.latex.tex.replace(/"/g,'&quot;')}"></div></div>`:''}
         </div>
         <div class="card rise">
@@ -616,10 +547,7 @@ const contact = el('section','',`
 contact.id='contact-sec';
 main.appendChild(contact);
 
-const tocItems = [
-  ...PROJECTS.map(p=>({id:p.id,no:p.no,t:p.title})),
-  {id:'contact-sec',no:'08',t:'Contact'},
-];
+const tocItems = [...PROJECTS.map(p=>({id:p.id,no:p.no,t:p.navTitle||p.title})), {id:'contact-sec',no:'08',t:'Contact'}];
 tocItems.forEach(i=>{
   const a = el('a','',`<span class="no">${i.no}</span><span class="tt">${i.t}</span>`);
   a.href = `#${i.id}`; a.dataset.target = i.id;
@@ -643,20 +571,15 @@ document.querySelectorAll('#toc a').forEach(a=>{
 const spy = new IntersectionObserver(es=>{
   es.forEach(e=>{
     if(!e.isIntersecting) return;
-    document.querySelectorAll('#toc a').forEach(a=>
-      a.classList.toggle('on', a.dataset.target===e.target.id));
+    document.querySelectorAll('#toc a').forEach(a=>a.classList.toggle('on', a.dataset.target===e.target.id));
   });
 },{rootMargin:'-45% 0px -50% 0px'});
 tocItems.forEach(i=>{ const s=document.getElementById(i.id); if(s) spy.observe(s); });
 
 const riser = new IntersectionObserver(es=>{
-  es.forEach((e)=>{ if(e.isIntersecting){
-    e.target.classList.add('in'); riser.unobserve(e.target);
-  }});
+  es.forEach((e)=>{ if(e.isIntersecting){ e.target.classList.add('in'); riser.unobserve(e.target); }});
 },{threshold:.15});
-document.querySelectorAll('.rise').forEach((r,i)=>{
-  r.style.transitionDelay = `${(i%4)*70}ms`; riser.observe(r);
-});
+document.querySelectorAll('.rise').forEach((r,i)=>{ r.style.transitionDelay = `${(i%4)*70}ms`; riser.observe(r); });
 
 const counter = new IntersectionObserver(es=>{
   es.forEach(e=>{
@@ -665,9 +588,9 @@ const counter = new IntersectionObserver(es=>{
     const dec = (String(t.dataset.count).split('.')[1]||'').length;
     const dur = 1200, t0 = performance.now();
     (function tick(now){
-      const p = Math.min((now-t0)/dur, 1), ease = 1-Math.pow(1-p,3);
+      const pr = Math.min((now-t0)/dur, 1), ease = 1-Math.pow(1-pr,3);
       t.textContent = (end*ease).toLocaleString(undefined,{minimumFractionDigits:dec,maximumFractionDigits:dec});
-      if(p<1) requestAnimationFrame(tick);
+      if(pr<1) requestAnimationFrame(tick);
     })(t0);
     counter.unobserve(t);
   });
@@ -683,17 +606,9 @@ window.addEventListener('load', ()=>{
 });
 
 const VIEWERS = [];
-
-/* ── 압축(Draco/meshopt) GLB도 로드되도록 디코더 연결한 공용 로더 ── */
 const GLTF_LOADER = new THREE.GLTFLoader();
-try {
-  const draco = new THREE.DRACOLoader();
-  draco.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
-  GLTF_LOADER.setDRACOLoader(draco);
-} catch(e){}
-try {
-  if (THREE.MeshoptDecoder) GLTF_LOADER.setMeshoptDecoder(THREE.MeshoptDecoder);
-} catch(e){}
+try { const draco = new THREE.DRACOLoader(); draco.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/'); GLTF_LOADER.setDRACOLoader(draco); } catch(e){}
+try { if (THREE.MeshoptDecoder) GLTF_LOADER.setMeshoptDecoder(THREE.MeshoptDecoder); } catch(e){}
 
 function makePlaceholder(){
   const g = new THREE.Group();
@@ -702,8 +617,7 @@ function makePlaceholder(){
   const a = new THREE.Mesh(new THREE.BoxGeometry(1.6,.5,.8), mat); a.position.y=-.55;
   const b = new THREE.Mesh(new THREE.CylinderGeometry(.22,.22,1.5,24), mat); b.rotation.z=.5;
   const c = new THREE.Mesh(new THREE.CylinderGeometry(.3,.3,.7,20), acc); c.rotation.x=Math.PI/2; c.position.set(-.6,-.5,0);
-  g.add(a,b,c);
-  return g;
+  g.add(a,b,c); return g;
 }
 
 function initViewer(box, proj){
@@ -722,18 +636,20 @@ function initViewer(box, proj){
   const rim = new THREE.DirectionalLight(0x9fb4d4, .6); rim.position.set(-4,2,-3); scene.add(rim);
 
   const pivot = new THREE.Group(); scene.add(pivot);
-  const tilt = new THREE.Group(); pivot.add(tilt);   // 눕히기(pitch)·기울이기(roll) 전용
+  const tilt = new THREE.Group(); pivot.add(tilt);
   tilt.rotation.x = proj.modelPitch || 0;
   tilt.rotation.z = proj.modelRoll  || 0;
   const loadEl = box.querySelector('.vload');
+  const ctl = new THREE.OrbitControls(cam, ren.domElement);
+  ctl.enableDamping = true; ctl.dampingFactor = .08;
+  ctl.enableZoom = false; ctl.enablePan = false;
+  ctl.minPolarAngle = -Infinity; ctl.maxPolarAngle = Infinity; ctl.rotateSpeed = 0.9;
 
   function fit(obj){
     const bb = new THREE.Box3().setFromObject(obj);
     const size = bb.getSize(new THREE.Vector3()), ctr = bb.getCenter(new THREE.Vector3());
-    const s = 3.0/Math.max(size.x,size.y,size.z);   // 정규화 크기 ↑ (화면에 꽉 차게)
-    obj.position.sub(ctr); obj.scale.setScalar(s);
-    obj.position.multiplyScalar(s);
-    // 카메라를 모델이 화면에 꽉 차도록 자동 배치 (cam 수동 지정 안 했을 때)
+    const s = 3.0/Math.max(size.x,size.y,size.z);
+    obj.position.sub(ctr); obj.scale.setScalar(s); obj.position.multiplyScalar(s);
     if(!proj.cam){
       const dist = 3.0 / Math.tan((cam.fov*Math.PI/180)/2) * 0.62;
       cam.position.set(dist*0.62, dist*0.42, dist*0.86);
@@ -750,20 +666,10 @@ function initViewer(box, proj){
             const ph=makePlaceholder(); tilt.add(ph);
             loadEl.textContent='GLB 로드 실패 — 콘솔(F12) 확인';
             setTimeout(()=>loadEl.classList.add('off'),1600); });
-  } else {
-    tilt.add(makePlaceholder()); loadEl.classList.add('off');
-  }
+  } else { tilt.add(makePlaceholder()); loadEl.classList.add('off'); }
   pivot.rotation.y = proj.modelYaw || 0;
 
-  const ctl = new THREE.OrbitControls(cam, ren.domElement);
-  ctl.enableDamping = true; ctl.dampingFactor = .08;
-  ctl.enableZoom = false; ctl.enablePan = false;
-  ctl.minPolarAngle = -Infinity;   // 상하 회전 한계 제거 (계속 넘어감)
-  ctl.maxPolarAngle =  Infinity;
-  ctl.rotateSpeed = 0.9;
-
-  const V = { scene, cam, ren, pivot, ctl, box, proj,
-              scrollRot:0, userHold:0, active:false, hsEls:[] };
+  const V = { scene, cam, ren, pivot, ctl, box, proj, scrollRot:0, userHold:0, active:false, hsEls:[] };
   ren.domElement.addEventListener('pointerdown', ()=>V.userHold = performance.now()+4000);
 
   box.querySelectorAll('.vctrl button').forEach(b=>{
@@ -790,16 +696,12 @@ function initViewer(box, proj){
       V.userHold = performance.now()+8000;
     });
   });
-  card.querySelector('.cx').addEventListener('click', ()=>{
-    card.classList.remove('show'); V.hsEls.forEach(o=>o.e.classList.remove('on'));
-  });
+  card.querySelector('.cx').addEventListener('click', ()=>{ card.classList.remove('show'); V.hsEls.forEach(o=>o.e.classList.remove('on')); });
 
-  /* ★ 핫스팟 좌표 도우미 (SITE.hotspotHelper === true 일 때만) */
   if (SITE.hotspotHelper) {
     const rc = new THREE.Raycaster(), m2 = new THREE.Vector2();
     const tag = el('div','', '클릭: 좌표 찍기');
-    tag.style.cssText = 'position:absolute;top:14px;right:14px;z-index:20;font:12px/1.5 monospace;'
-      +'background:#ffcc00;color:#111;padding:8px 10px;border-radius:8px;max-width:70%;cursor:pointer';
+    tag.style.cssText = 'position:absolute;top:14px;right:14px;z-index:20;font:12px/1.5 monospace;background:#ffcc00;color:#111;padding:8px 10px;border-radius:8px;max-width:70%;cursor:pointer';
     box.appendChild(tag);
     ren.domElement.style.cursor = 'crosshair';
     ren.domElement.addEventListener('click', (ev)=>{
@@ -809,7 +711,6 @@ function initViewer(box, proj){
       rc.setFromCamera(m2, cam);
       const hit = rc.intersectObject(pivot, true)[0];
       if(!hit){ tag.textContent='빈 곳 — 모델 표면을 클릭'; return; }
-      // 월드 좌표를 pivot 로컬로 변환 (CONFIG의 pos와 같은 좌표계)
       const p = pivot.worldToLocal(hit.point.clone());
       const s = v=>Math.round(v*100)/100;
       const txt = `pos:[${s(p.x)}, ${s(p.y)}, ${s(p.z)}]`;
@@ -822,15 +723,13 @@ function initViewer(box, proj){
   const sec = box.closest('section');
   if (window.gsap && window.ScrollTrigger) {
     gsap.registerPlugin(ScrollTrigger);
-    ScrollTrigger.create({
-      trigger: sec, start:'top bottom', end:'bottom top', scrub:true,
-      onUpdate: st => V.scrollRot = st.progress * Math.PI * (proj.rot ?? 1.6),
-    });
+    ScrollTrigger.create({ trigger: sec, start:'top bottom', end:'bottom top', scrub:true,
+      onUpdate: st => V.scrollRot = st.progress * Math.PI * (proj.rot ?? 1.6) });
   } else {
     addEventListener('scroll', ()=>{
       const r = sec.getBoundingClientRect();
-      const p = Math.min(Math.max(1 - (r.bottom)/(innerHeight + r.height), 0), 1);
-      V.scrollRot = p * Math.PI * 1.6;
+      const pr = Math.min(Math.max(1 - (r.bottom)/(innerHeight + r.height), 0), 1);
+      V.scrollRot = pr * Math.PI * 1.6;
     }, {passive:true});
   }
 
@@ -839,8 +738,7 @@ function initViewer(box, proj){
     ren.setSize(box.clientWidth, box.clientHeight);
   });
 
-  VIEWERS.push(V);
-  return V;
+  VIEWERS.push(V); return V;
 }
 
 const vio = new IntersectionObserver(es=>{
