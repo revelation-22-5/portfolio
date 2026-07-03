@@ -325,10 +325,11 @@ table.spec td.v .num{color:var(--txt)}
 <script>
 /* ================================================================
    CONFIG
-   ── 모델 방향 조정 옵션 (각 프로젝트에 넣기, 단위: 라디안) ──
-   · modelYaw   : 좌우 회전 (기본 자동회전 축)
-   · modelPitch : 앞뒤로 눕히기.  1.57 = 90°(눕힘),  3.14 = 180°
-   · modelRoll  : 좌우로 기울이기
+   ── 모델 방향 조정 (각 프로젝트 glb 줄, 단위: 라디안) ──
+   · modelYaw   : 좌우 회전 (스크롤 자동회전이 도는 축)
+   · modelPitch : 앞뒤로 눕히기.  1.57=앞90° / -1.57=뒤90° / 3.14=180°
+   · modelRoll  : 좌우로 굴리기
+   값 안 맞으면 이 세 개를 1.57 / -1.57 / 3.14 / 0 조합으로 바꿔보며 맞춤.
    · cam        : 카메라 위치 [x,y,z] 수동지정. 안 쓰면 자동으로 꽉 차게 배치.
    ================================================================ */
 const SITE = {
@@ -353,7 +354,7 @@ const PROJECTS = [
 {
   id:"spmt", no:"01", title:"SPMT",
   subtitle:"발사체·TE·ECS 총 71.8t을 24륜으로 분담해 옮기는 자주식 모듈 운반차. 다축 분담과 대형 타이어로 접지압을 낮춰 발사장 포장면을 보호한다.",
-  glb:"assets/models/SPMT-v6-v1.glb", modelYaw:0.5, modelPitch:1.57,
+  glb:"assets/models/SPMT-v6-v1.glb", modelYaw:0.5, modelPitch:-1.57, modelRoll:0,
   hotspots:[
     { pos:[0,0.55,0.6], t:"적재 플랫폼", d:"TE·발사체·ECS를 통합 적재. 2대 1조 운용으로 하중을 절반씩 분담한다.", s:[["분담하중","352 kN"],["구성","2대 × 6축"]] },
     { pos:[0.7,-0.45,0.55], t:"타이어 (⌀1.39 m)", d:"대형 타이어의 넓은 접지면으로 지면 압력을 낮춰 노면을 보호한다.", s:[["륜하중","3.0 t"],["접지압","163 kPa"]] },
@@ -375,7 +376,7 @@ const PROJECTS = [
 {
   id:"erector", no:"02", title:"Erector",
   subtitle:"발사체를 수평에서 수직으로 세우는 기립 장치. ⌀300mm 유압 실린더와 3단 텔레스코픽 구조로 0°→90° 기립을 구현했다.",
-  glb:"assets/models/Erector-v4.glb", modelYaw:0.4,
+  glb:"assets/models/Erector-v4.glb", modelYaw:0.4, modelPitch:0, modelRoll:0,
   hotspots:[
     { pos:[0,1.0,0.5], t:"3단 텔레스코픽 스테이지", d:"신장 시 총 14.3m 스트로크를 만들어내는 다단 구조.", s:[["총 스트로크","14.3 m"],["구성","3단"]] },
     { pos:[0.5,0,0.5], t:"유압 실린더", d:"기립 구동의 핵심. 힌지 모멘트를 감당하는 추력을 발생시킨다.", s:[["보어","⌀300 mm"],["기립각","0→90°"]] },
@@ -398,7 +399,7 @@ const PROJECTS = [
 {
   id:"te", no:"03", title:"Transporter Erector",
   subtitle:"Falcon 9 Block 5 건조질량 기준으로 설계 허용하중을 산정하고, ANSYS 위상 최적화로 트러스 토폴로지를 검증한 발사체 지지 구조물.",
-  glb:"assets/models/TE-v7.glb", modelYaw:0.4,
+  glb:"assets/models/TE-v7.glb", modelYaw:0.4, modelPitch:0, modelRoll:0,
   hotspots:[
     { pos:[0,0.8,0.5], t:"트러스 구조", d:"위상 최적화(Minimize Compliance, 질량 30~40% 제약) 결과를 Antares TEL 트러스와 교차 검증.", s:[["기법","Topology Opt."],["툴","ANSYS"]] },
     { pos:[0,-0.5,0.6], t:"새들 지지부", d:"발사체 동체를 받치는 접촉부. 허용하중 기준으로 반력을 검증했다.", s:[["허용하중","565 kN"],["SF","2.0"]] },
@@ -420,7 +421,7 @@ const PROJECTS = [
 {
   id:"afp", no:"04", title:"AFP Head",
   subtitle:"KUKA KR210 기반 6축 로봇암과 싱글 토우 AFP 헤드. 6개 유닛의 유기적 구성으로 TPS 패널 프리프레그를 ±0.05mm 정밀도로 적층한다.",
-  glb:"assets/models/AFP_Robot-v1.glb", modelYaw:0.6,
+  glb:"assets/models/AFP_Robot-v1.glb", modelYaw:0.6, modelPitch:0, modelRoll:0,
   hotspots:[
     { pos:[0,0.7,0.5], t:"Tension Control Unit", d:"PID 폐루프 제어로 적층 장력을 실시간 유지. 리니어 포텐셔미터 + 자기 분말 브레이크.", s:[["제어","PID 폐루프"],["역할","장력 유지"]] },
     { pos:[0.5,-0.2,0.5], t:"Heating + Compaction", d:"레이저 열원으로 닙 포인트를 국소 가열하고 압착 롤러로 물리적 압착.", s:[["열원","Laser"],["방식","In-situ"]] },
@@ -443,7 +444,7 @@ const PROJECTS = [
 {
   id:"conveyor", no:"05", title:"Conveyor Belt",
   subtitle:"TPS 패널 라인의 이송 축. 롤러 Revolute Joint 회전으로 벨트 이송을 구현하고, 랙앤피니언 진공 패킹 부스와 흡착 로봇암으로 AMR에 인계한다.",
-  glb:"assets/models/Convey-v2.glb", modelYaw:0.3,
+  glb:"assets/models/Convey-v2.glb", modelYaw:0.3, modelPitch:0, modelRoll:0,
   hotspots:[
     { pos:[0.6,0.2,0.5], t:"구동 롤러", d:"Revolute Joint 회전으로 벨트 이송을 표현. 나선형 프로젝션으로 회전을 시각화.", s:[["조인트","Revolute"],["표현","나선 마킹"]] },
     { pos:[-0.5,0.3,0.5], t:"진공 패킹 부스", d:"랙앤피니언 도어의 상하 개폐 Kinematics를 구현.", s:[["도어","Rack&Pinion"],["기능","진공 패킹"]] },
@@ -464,7 +465,7 @@ const PROJECTS = [
 {
   id:"ptc", no:"06", title:"PTC",
   subtitle:"※ 이 섹션의 소개·제원은 선생님이 채워야 합니다 — CONFIG의 ptc 항목을 수정하세요.",
-  glb:"assets/models/PTC-v5.glb", modelYaw:0.4,
+  glb:"assets/models/PTC-v5.glb", modelYaw:0.4, modelPitch:0, modelRoll:0,
   hotspots:[
     { pos:[0,0.5,0.5], t:"핫스팟 예시", d:"CONFIG에서 pos 좌표와 설명을 채우세요.", s:[["항목","값"],["항목","값"]] },
   ],
