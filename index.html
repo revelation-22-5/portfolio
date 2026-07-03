@@ -325,6 +325,11 @@ table.spec td.v .num{color:var(--txt)}
 <script>
 /* ================================================================
    CONFIG
+   ── 모델 방향 조정 옵션 (각 프로젝트에 넣기, 단위: 라디안) ──
+   · modelYaw   : 좌우 회전 (기본 자동회전 축)
+   · modelPitch : 앞뒤로 눕히기.  1.57 = 90°(눕힘),  3.14 = 180°
+   · modelRoll  : 좌우로 기울이기
+   · cam        : 카메라 위치 [x,y,z] 수동지정. 안 쓰면 자동으로 꽉 차게 배치.
    ================================================================ */
 const SITE = {
   name: "임재훈",
@@ -348,7 +353,7 @@ const PROJECTS = [
 {
   id:"spmt", no:"01", title:"SPMT",
   subtitle:"발사체·TE·ECS 총 71.8t을 24륜으로 분담해 옮기는 자주식 모듈 운반차. 다축 분담과 대형 타이어로 접지압을 낮춰 발사장 포장면을 보호한다.",
-  glb:"assets/models/SPMT-v6-v1.glb", modelYaw:0.5,
+  glb:"assets/models/SPMT-v6-v1.glb", modelYaw:0.5, modelPitch:1.57,
   hotspots:[
     { pos:[0,0.55,0.6], t:"적재 플랫폼", d:"TE·발사체·ECS를 통합 적재. 2대 1조 운용으로 하중을 절반씩 분담한다.", s:[["분담하중","352 kN"],["구성","2대 × 6축"]] },
     { pos:[0.7,-0.45,0.55], t:"타이어 (⌀1.39 m)", d:"대형 타이어의 넓은 접지면으로 지면 압력을 낮춰 노면을 보호한다.", s:[["륜하중","3.0 t"],["접지압","163 kPa"]] },
@@ -702,32 +707,45 @@ function initViewer(box, proj){
   const rim = new THREE.DirectionalLight(0x9fb4d4, .6); rim.position.set(-4,2,-3); scene.add(rim);
 
   const pivot = new THREE.Group(); scene.add(pivot);
+  const tilt = new THREE.Group(); pivot.add(tilt);   // 눕히기(pitch)·기울이기(roll) 전용
+  tilt.rotation.x = proj.modelPitch || 0;
+  tilt.rotation.z = proj.modelRoll  || 0;
   const loadEl = box.querySelector('.vload');
 
   function fit(obj){
     const bb = new THREE.Box3().setFromObject(obj);
     const size = bb.getSize(new THREE.Vector3()), ctr = bb.getCenter(new THREE.Vector3());
-    const s = 2.2/Math.max(size.x,size.y,size.z);
+    const s = 3.0/Math.max(size.x,size.y,size.z);   // 정규화 크기 ↑ (화면에 꽉 차게)
     obj.position.sub(ctr); obj.scale.setScalar(s);
     obj.position.multiplyScalar(s);
+    // 카메라를 모델이 화면에 꽉 차도록 자동 배치 (cam 수동 지정 안 했을 때)
+    if(!proj.cam){
+      const dist = 3.0 / Math.tan((cam.fov*Math.PI/180)/2) * 0.62;
+      cam.position.set(dist*0.62, dist*0.42, dist*0.86);
+      camHome[0]=cam.position.x; camHome[1]=cam.position.y; camHome[2]=cam.position.z;
+      ctl.target.set(0,0,0); ctl.update();
+    }
   }
 
   if (proj.glb) {
     GLTF_LOADER.load(proj.glb,
-      g=>{ fit(g.scene); pivot.add(g.scene); loadEl.classList.add('off'); },
+      g=>{ fit(g.scene); tilt.add(g.scene); loadEl.classList.add('off'); },
       undefined,
       (err)=>{ console.error('[GLB load fail]', proj.glb, err);
-            const ph=makePlaceholder(); pivot.add(ph);
+            const ph=makePlaceholder(); tilt.add(ph);
             loadEl.textContent='GLB 로드 실패 — 콘솔(F12) 확인';
             setTimeout(()=>loadEl.classList.add('off'),1600); });
   } else {
-    pivot.add(makePlaceholder()); loadEl.classList.add('off');
+    tilt.add(makePlaceholder()); loadEl.classList.add('off');
   }
   pivot.rotation.y = proj.modelYaw || 0;
 
   const ctl = new THREE.OrbitControls(cam, ren.domElement);
   ctl.enableDamping = true; ctl.dampingFactor = .08;
   ctl.enableZoom = false; ctl.enablePan = false;
+  ctl.minPolarAngle = -Infinity;   // 상하 회전 한계 제거 (계속 넘어감)
+  ctl.maxPolarAngle =  Infinity;
+  ctl.rotateSpeed = 0.9;
 
   const V = { scene, cam, ren, pivot, ctl, box, proj,
               scrollRot:0, userHold:0, active:false, hsEls:[] };
@@ -739,7 +757,7 @@ function initViewer(box, proj){
       if(b.dataset.act==='zin')  cam.position.addScaledVector(dir,-.4);
       if(b.dataset.act==='zout') cam.position.addScaledVector(dir, .4);
       if(b.dataset.act==='reset'){ cam.position.set(...camHome); ctl.target.set(0,0,0); V.userHold=0; }
-      cam.position.clampLength(1.6, 9);
+      cam.position.clampLength(1.8, 16);
     });
   });
 
