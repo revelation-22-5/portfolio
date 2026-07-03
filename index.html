@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>임재훈 — Mechanical Design Portfolio</title>
- 
+
 <!-- 폰트 -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
- 
+
 <!-- KaTeX (수식) -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
- 
+
 <style>
 /* ============================================================
    DESIGN TOKENS
@@ -22,18 +22,18 @@
   --sub:     #6B6B6B;
   --accent:  #2B4C7E;
   --line:    #E5E3DD;
- 
+
   /* ── C안: 3D 뷰어 안쪽만 어둡게 (밝은 모델이 묻히지 않도록) ── */
   --viewer-bg:   #1C2128;  /* 뷰어 배경 (어두운 차콜) */
-  --viewer-line: #2E3540;  
-  --viewer-txt:  #C4CCD6;  
+  --viewer-line: #2E3540;  /* 뷰어 안 테두리/구분선 */
+  --viewer-txt:  #C4CCD6;  /* 뷰어 안 밝은 글자 */
   --viewer-sub:  #7F8A99;  /* 뷰어 안 흐린 글자 */
   --viewer-accent:#7FA8D8; /* 뷰어 안 포인트(밝은 파랑) */
- 
+
   --font-body:'Pretendard Variable',Pretendard,-apple-system,sans-serif;
   --font-disp:'Pretendard Variable',Pretendard,sans-serif;
   --font-mono:'Pretendard Variable',Pretendard,sans-serif;
- 
+
   --sidebar-w: 240px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
@@ -46,7 +46,7 @@ body{
   font-variant-numeric:tabular-nums;
 }
 ::selection{background:var(--accent);color:var(--bg)}
- 
+
 /* ============================================================
    좌측 고정 사이드바 (스크롤 스파이)
    ============================================================ */
@@ -70,13 +70,13 @@ nav.side{
 .side ol a.on .tt{color:var(--accent);font-weight:700}
 .side ol a.on .no{color:var(--accent)}
 .side .foot{margin-top:auto;font-family:var(--font-mono);font-size:10px;color:var(--sub);letter-spacing:.06em;line-height:1.8}
- 
+
 /* ============================================================
    메인 영역
    ============================================================ */
 main{margin-left:var(--sidebar-w)}
 section{border-bottom:1px solid var(--line)}
- 
+
 /* ---------- 히어로 ---------- */
 #hero{
   min-height:100vh;display:grid;grid-template-columns:1fr 1fr;
@@ -117,7 +117,7 @@ section{border-bottom:1px solid var(--line)}
   background:var(--accent);animation:drip 2s ease-in-out infinite;
 }
 @keyframes drip{to{top:110%}}
- 
+
 /* ---------- 프로젝트 섹션 공통 템플릿 ---------- */
 .proj{padding:0 56px}
 .proj .inner{min-height:158vh;padding:80px 0 90px}
@@ -132,7 +132,7 @@ section{border-bottom:1px solid var(--line)}
   font-size:clamp(28px,3.2vw,46px);letter-spacing:-.02em;line-height:1.08;
 }
 .proj .sub{margin-top:10px;color:var(--sub);font-size:15px;max-width:62ch}
- 
+
 .proj .grid{
   display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:28px;
   align-items:start;
@@ -162,7 +162,7 @@ section{border-bottom:1px solid var(--line)}
   background:var(--viewer-bg);transition:opacity .5s;
 }
 .viewer .vload.off{opacity:0;pointer-events:none}
- 
+
 /* 핫스팟 ── C안: 어두운 뷰어 위에서 밝게 ── */
 .hs{
   position:absolute;width:24px;height:24px;transform:translate(-50%,-50%);cursor:pointer;z-index:6;
@@ -179,7 +179,7 @@ section{border-bottom:1px solid var(--line)}
 }
 @keyframes hsPulse{0%{transform:scale(.85);opacity:.45}100%{transform:scale(1.55);opacity:0}}
 .hs:hover .dot,.hs.on .dot{background:var(--viewer-accent);color:var(--viewer-bg)}
- 
+
 /* 핫스팟 상세 카드 ── C안: 어두운 카드 ── */
 .hs-card{
   position:absolute;right:14px;bottom:14px;width:min(320px,72%);
@@ -200,7 +200,7 @@ section{border-bottom:1px solid var(--line)}
   color:var(--viewer-sub);font-size:14px;line-height:1;
 }
 .hs-card .cx:hover{color:var(--viewer-txt)}
- 
+
 /* 오른쪽 — 설계표 + 미디어 (밝은 톤 유지) */
 .panel{display:flex;flex-direction:column;gap:22px}
 .card{
@@ -211,7 +211,7 @@ section{border-bottom:1px solid var(--line)}
   display:flex;align-items:center;gap:10px;margin-bottom:18px;text-transform:uppercase;
 }
 .card .ct::before{content:'';width:16px;height:1px;background:var(--accent)}
- 
+
 /* 설계 사양표 */
 table.spec{width:100%;border-collapse:collapse}
 table.spec td{padding:10px 4px;border-bottom:1px solid var(--line);font-size:13.5px;vertical-align:baseline}
@@ -226,7 +226,7 @@ table.spec td.v .num{color:var(--txt)}
 }
 .formula .fl{font-family:var(--font-mono);font-size:9.5px;color:var(--sub);letter-spacing:.1em;margin-bottom:8px}
 .formula .ktx{font-size:14px}
- 
+
 /* 미디어 갤러리 */
 .media-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .mitem{
@@ -244,11 +244,11 @@ table.spec td.v .num{color:var(--txt)}
   position:absolute;inset:0;display:grid;place-items:center;
   font-family:var(--font-mono);font-size:10px;color:var(--sub);letter-spacing:.1em;text-align:center;line-height:1.8;
 }
- 
+
 /* 등장 애니메이션 */
 .rise{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
 .rise.in{opacity:1;transform:none}
- 
+
 /* ---------- Contact ---------- */
 #contact{min-height:88vh;display:grid;place-items:center;padding:80px 56px;border-bottom:none}
 #contact .cwrap{display:grid;grid-template-columns:auto 1fr;gap:56px;align-items:center;max-width:860px;width:100%}
@@ -266,7 +266,7 @@ table.spec td.v .num{color:var(--txt)}
 }
 #contact .cl a .lb{font-family:var(--font-mono);font-size:10px;color:var(--sub);letter-spacing:.14em;width:52px}
 #contact .cl a:hover{color:var(--accent)}
- 
+
 /* ---------- 모바일 ---------- */
 @media(max-width:1020px){
   nav.side{
@@ -299,7 +299,7 @@ table.spec td.v .num{color:var(--txt)}
 </style>
 </head>
 <body>
- 
+
 <!-- ============ 좌측 사이드바 ============ -->
 <nav class="side">
   <div class="who">
@@ -309,17 +309,19 @@ table.spec td.v .num{color:var(--txt)}
   <ol id="toc"></ol>
   <div class="foot">MECHANICAL DESIGN<br>CATIA V5 · ANSYS · CFD</div>
 </nav>
- 
+
 <main id="main"></main>
- 
+
 <!-- ============ 라이브러리 ============ -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/DRACOLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/libs/meshopt_decoder.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
- 
+
 <script>
 /* ================================================================
    CONFIG
@@ -341,7 +343,7 @@ const SITE = {
   email: "pgup111@naver.com",
   photo: "",
 };
- 
+
 const PROJECTS = [
 {
   id:"spmt", no:"01", title:"SPMT",
@@ -492,13 +494,13 @@ const PROJECTS = [
 },
 ];
 /* ================== CONFIG 끝 — 아래는 엔진 ================== */
- 
- 
+
+
 const main = document.getElementById('main');
 const toc  = document.getElementById('toc');
- 
+
 function el(tag, cls, html){ const e=document.createElement(tag); if(cls)e.className=cls; if(html!=null)e.innerHTML=html; return e; }
- 
+
 function mItem(m, extraCls=''){
   if(m.type==='youtube') return `<div class="mitem${extraCls}">${m.id
     ? `<iframe src="https://www.youtube.com/embed/${m.id}" allowfullscreen loading="lazy"></iframe>`
@@ -507,7 +509,7 @@ function mItem(m, extraCls=''){
     ? `<img src="${m.src}" alt="${m.cap}" loading="lazy">`
     : `<div class="ph">이미지 경로를<br>CONFIG에 입력</div>`}<div class="cap">${m.cap}</div></div>`;
 }
- 
+
 const hero = el('section','', `
   <div id="hero">
     <div class="txt">
@@ -524,7 +526,7 @@ const hero = el('section','', `
   </div>`);
 hero.id='top';
 main.appendChild(hero);
- 
+
 PROJECTS.forEach(p=>{
   const sec = el('section','proj'); sec.id = p.id;
   sec.innerHTML = `
@@ -577,7 +579,7 @@ PROJECTS.forEach(p=>{
   </div>`;
   main.appendChild(sec);
 });
- 
+
 const contact = el('section','',`
   <div id="contact">
     <div class="cwrap">
@@ -593,7 +595,7 @@ const contact = el('section','',`
   </div>`);
 contact.id='contact-sec';
 main.appendChild(contact);
- 
+
 const tocItems = [
   ...PROJECTS.map(p=>({id:p.id,no:p.no,t:p.title})),
   {id:'contact-sec',no:'08',t:'Contact'},
@@ -603,7 +605,7 @@ tocItems.forEach(i=>{
   a.href = `#${i.id}`; a.dataset.target = i.id;
   const li = el('li'); li.appendChild(a); toc.appendChild(li);
 });
- 
+
 let lenis = null;
 if (window.Lenis) {
   lenis = new Lenis({ duration: 1.15, smoothWheel: true });
@@ -617,7 +619,7 @@ document.querySelectorAll('#toc a').forEach(a=>{
     if (lenis) lenis.scrollTo(t, {offset:-8}); else t.scrollIntoView({behavior:'smooth'});
   });
 });
- 
+
 const spy = new IntersectionObserver(es=>{
   es.forEach(e=>{
     if(!e.isIntersecting) return;
@@ -626,7 +628,7 @@ const spy = new IntersectionObserver(es=>{
   });
 },{rootMargin:'-45% 0px -50% 0px'});
 tocItems.forEach(i=>{ const s=document.getElementById(i.id); if(s) spy.observe(s); });
- 
+
 const riser = new IntersectionObserver(es=>{
   es.forEach((e)=>{ if(e.isIntersecting){
     e.target.classList.add('in'); riser.unobserve(e.target);
@@ -635,7 +637,7 @@ const riser = new IntersectionObserver(es=>{
 document.querySelectorAll('.rise').forEach((r,i)=>{
   r.style.transitionDelay = `${(i%4)*70}ms`; riser.observe(r);
 });
- 
+
 const counter = new IntersectionObserver(es=>{
   es.forEach(e=>{
     if(!e.isIntersecting) return;
@@ -651,7 +653,7 @@ const counter = new IntersectionObserver(es=>{
   });
 },{threshold:.6});
 document.querySelectorAll('[data-count]').forEach(n=>counter.observe(n));
- 
+
 window.addEventListener('load', ()=>{
   if(!window.katex) return;
   document.querySelectorAll('.ktx').forEach(k=>{
@@ -659,9 +661,20 @@ window.addEventListener('load', ()=>{
     catch(err){ k.textContent = k.dataset.tex; }
   });
 });
- 
+
 const VIEWERS = [];
- 
+
+/* ── 압축(Draco/meshopt) GLB도 로드되도록 디코더 연결한 공용 로더 ── */
+const GLTF_LOADER = new THREE.GLTFLoader();
+try {
+  const draco = new THREE.DRACOLoader();
+  draco.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
+  GLTF_LOADER.setDRACOLoader(draco);
+} catch(e){}
+try {
+  if (THREE.MeshoptDecoder) GLTF_LOADER.setMeshoptDecoder(THREE.MeshoptDecoder);
+} catch(e){}
+
 function makePlaceholder(){
   const g = new THREE.Group();
   const mat = new THREE.MeshStandardMaterial({color:0x9aa3ad, metalness:.7, roughness:.45});
@@ -672,7 +685,7 @@ function makePlaceholder(){
   g.add(a,b,c);
   return g;
 }
- 
+
 function initViewer(box, proj){
   const scene = new THREE.Scene();
   const cam = new THREE.PerspectiveCamera(42, box.clientWidth/box.clientHeight, .05, 100);
@@ -683,14 +696,14 @@ function initViewer(box, proj){
   ren.setPixelRatio(Math.min(devicePixelRatio, 2));
   ren.outputEncoding = THREE.sRGBEncoding;
   box.prepend(ren.domElement);
- 
+
   scene.add(new THREE.HemisphereLight(0xffffff, 0x30363f, 1.0));
   const key = new THREE.DirectionalLight(0xffffff, 1.0); key.position.set(4,6,4); scene.add(key);
   const rim = new THREE.DirectionalLight(0x9fb4d4, .6); rim.position.set(-4,2,-3); scene.add(rim);
- 
+
   const pivot = new THREE.Group(); scene.add(pivot);
   const loadEl = box.querySelector('.vload');
- 
+
   function fit(obj){
     const bb = new THREE.Box3().setFromObject(obj);
     const size = bb.getSize(new THREE.Vector3()), ctr = bb.getCenter(new THREE.Vector3());
@@ -698,27 +711,28 @@ function initViewer(box, proj){
     obj.position.sub(ctr); obj.scale.setScalar(s);
     obj.position.multiplyScalar(s);
   }
- 
+
   if (proj.glb) {
-    new THREE.GLTFLoader().load(proj.glb,
+    GLTF_LOADER.load(proj.glb,
       g=>{ fit(g.scene); pivot.add(g.scene); loadEl.classList.add('off'); },
       undefined,
-      ()=>{ const ph=makePlaceholder(); pivot.add(ph);
-            loadEl.textContent='GLB 경로 확인 필요 — 자리표시 모델';
-            setTimeout(()=>loadEl.classList.add('off'),1400); });
+      (err)=>{ console.error('[GLB load fail]', proj.glb, err);
+            const ph=makePlaceholder(); pivot.add(ph);
+            loadEl.textContent='GLB 로드 실패 — 콘솔(F12) 확인';
+            setTimeout(()=>loadEl.classList.add('off'),1600); });
   } else {
     pivot.add(makePlaceholder()); loadEl.classList.add('off');
   }
   pivot.rotation.y = proj.modelYaw || 0;
- 
+
   const ctl = new THREE.OrbitControls(cam, ren.domElement);
   ctl.enableDamping = true; ctl.dampingFactor = .08;
   ctl.enableZoom = false; ctl.enablePan = false;
- 
+
   const V = { scene, cam, ren, pivot, ctl, box, proj,
               scrollRot:0, userHold:0, active:false, hsEls:[] };
   ren.domElement.addEventListener('pointerdown', ()=>V.userHold = performance.now()+4000);
- 
+
   box.querySelectorAll('.vctrl button').forEach(b=>{
     b.addEventListener('click', ()=>{
       const dir = cam.position.clone().normalize();
@@ -728,7 +742,7 @@ function initViewer(box, proj){
       cam.position.clampLength(1.6, 9);
     });
   });
- 
+
   const card = box.querySelector('.hs-card');
   proj.hotspots.forEach((h,idx)=>{
     const e = el('div','hs',`<div class="dot">+</div>`);
@@ -746,7 +760,7 @@ function initViewer(box, proj){
   card.querySelector('.cx').addEventListener('click', ()=>{
     card.classList.remove('show'); V.hsEls.forEach(o=>o.e.classList.remove('on'));
   });
- 
+
   const sec = box.closest('section');
   if (window.gsap && window.ScrollTrigger) {
     gsap.registerPlugin(ScrollTrigger);
@@ -761,16 +775,16 @@ function initViewer(box, proj){
       V.scrollRot = p * Math.PI * 1.6;
     }, {passive:true});
   }
- 
+
   addEventListener('resize', ()=>{
     cam.aspect = box.clientWidth/box.clientHeight; cam.updateProjectionMatrix();
     ren.setSize(box.clientWidth, box.clientHeight);
   });
- 
+
   VIEWERS.push(V);
   return V;
 }
- 
+
 const vio = new IntersectionObserver(es=>{
   es.forEach(e=>{
     const box = e.target;
@@ -784,7 +798,7 @@ const vio = new IntersectionObserver(es=>{
   });
 },{rootMargin:'150px'});
 document.querySelectorAll('.viewer').forEach(b=>vio.observe(b));
- 
+
 const _v3 = new THREE.Vector3();
 function loop(){
   requestAnimationFrame(loop);
@@ -810,4 +824,3 @@ loop();
 </script>
 </body>
 </html>
- 
