@@ -222,7 +222,7 @@ table.spec td.v.hl .num{color:var(--accent);font-weight:700;font-size:14.5px}
    ================================================================ */
 const SITE = {
   name: "임재훈",
-  hotspotHelper: true,
+  hotspotHelper: false,
   heroTitle: ["Mechanical", "Design", "Portfolio"],
   tagline: "Mechanical design engineer focused on structures, mechanisms, and flow.",
   heroVideos: ["avftUkOVd78", "Z2ezQZCM8-4"],
@@ -351,9 +351,8 @@ const PROJECTS = [
     { k:"경로 생성", v:"ㄹ자 적층 (Track)" },
   ],
   media:[
-    { type:"video", src:"assets/videos/AFP_Head_03.mp4", cap:"AFP 적층 시뮬레이션" },
-    { type:"image", src:"assets/images/AFP_Head_01.png", cap:"헤드 유닛 (1)" },
-    { type:"image", src:"assets/images/AFP_Head_02.png", cap:"헤드 유닛 (2)" }
+    { type:"video", src:"assets/videos/AFP_01.mp4", cap:"AFP 적층 시뮬레이션" },
+    { type:"video", src:"assets/videos/AFP_02.mp4", cap:"헤드 유닛 동작" },
   ],
 },
 {
@@ -376,8 +375,8 @@ const PROJECTS = [
     { k:"동작 검증", v:"DMU Kinematics" },
   ],
   media:[
-    { type:"video", src:"assets/videos/Convey_01.mp4", cap:"진공 패킹 부스 동작" },
-    { type:"video", src:"assets/videos/Convey_02.mp4", cap:"라인 통합 시뮬레이션" }
+    { type:"video", src:"assets/videos/Conveyor_01.mp4", cap:"라인 통합 시뮬레이션" },
+    { type:"video", src:"assets/videos/Conveyor_02.mp4", cap:"진공 패킹 부스 동작" },
   ],
 },
 {
@@ -409,7 +408,10 @@ const PROJECTS = [
   ],
   latex:{ label:"발열량에 따른 필요 히트코어 단 수", tex:"\\dot{Q}=\\dot{m}\\,c_p\\,\\Delta T \\;\\Rightarrow\\; N_{core}=\\left\\lceil \\frac{\\dot{Q}}{\\dot{q}_{core}} \\right\\rceil" },
   media:[
-    { type:"video", src:"assets/videos/PTC.mp4", speed:1.25, cap:"제어기 일체형 PTC 히터 — 구조 · 조립" }
+    { type:"video", src:"assets/videos/PTC.mp4", speed:2.25, cap:"제어기 일체형 PTC 히터 — 구조 · 조립" },
+    { type:"image", src:"assets/images/PTC_assembly.png", cap:"제어기 일체형 최종 조립도" },
+    { type:"image", src:"assets/images/PTC_compare.png", cap:"분리형 vs 일체형 외관 비교" },
+    { type:"image", src:"assets/images/PTC_fem.png", cap:"성능해석 1/16 축소 모델" },
   ],
 },
 {
@@ -697,78 +699,26 @@ function initViewer(box, proj){
   card.querySelector('.cx').addEventListener('click', ()=>{ card.classList.remove('show'); V.hsEls.forEach(o=>o.e.classList.remove('on')); });
 
   if (SITE.hotspotHelper) {
-
-    const rc = new THREE.Raycaster();
-    const mouse = new THREE.Vector2();
-
-    const tag = document.createElement("div");
-    tag.style.cssText = `
-        position:absolute;
-        top:15px;
-        right:15px;
-        z-index:30;
-        background:#FFC107;
-        color:#111;
-        padding:10px 12px;
-        border-radius:8px;
-        font:12px monospace;
-        white-space:pre-wrap;
-        cursor:pointer;
-        max-width:320px;
-    `;
-
-    tag.textContent = "모델을 클릭하세요";
+    const rc = new THREE.Raycaster(), m2 = new THREE.Vector2();
+    const tag = el('div','', '클릭: 좌표 찍기');
+    tag.style.cssText = 'position:absolute;top:14px;right:14px;z-index:20;font:12px/1.5 monospace;background:#ffcc00;color:#111;padding:8px 10px;border-radius:8px;max-width:70%;cursor:pointer';
     box.appendChild(tag);
-
-    ren.domElement.style.cursor = "crosshair";
-
-    ren.domElement.addEventListener("click", (e) => {
-
-        if (!V.model) {
-            tag.textContent = "모델 로딩중...";
-            return;
-        }
-
-        const rect = ren.domElement.getBoundingClientRect();
-
-        mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-        mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
-
-        rc.setFromCamera(mouse, cam);
-
-        const hit = rc.intersectObject(V.model, true)[0];
-
-        if (!hit) {
-            tag.textContent = "모델을 클릭하세요";
-            return;
-        }
-
-        const p = V.pivot.worldToLocal(hit.point.clone());
-
-        const f = (n) => Number(n.toFixed(2));
-
-        const output =
-`{
-    pos: [${f(p.x)}, ${f(p.y)}, ${f(p.z)}],
-    t: "",
-    d: "",
-    s: [
-        ["", ""],
-        ["", ""]
-    ]
-},`;
-
-        console.log(output);
-
-        navigator.clipboard.writeText(output);
-
-        tag.textContent =
-`✅ 복사 완료!
-
-${output}`;
+    ren.domElement.style.cursor = 'crosshair';
+    ren.domElement.addEventListener('click', (ev)=>{
+      const r = ren.domElement.getBoundingClientRect();
+      m2.x = ((ev.clientX-r.left)/r.width)*2-1;
+      m2.y = -((ev.clientY-r.top)/r.height)*2+1;
+      rc.setFromCamera(m2, cam);
+      const hit = rc.intersectObject(pivot, true)[0];
+      if(!hit){ tag.textContent='빈 곳 — 모델 표면을 클릭'; return; }
+      const p = pivot.worldToLocal(hit.point.clone());
+      const s = v=>Math.round(v*100)/100;
+      const txt = `pos:[${s(p.x)}, ${s(p.y)}, ${s(p.z)}]`;
+      tag.textContent = txt + '  (클릭하면 복사)';
+      tag.onclick = ()=>{ navigator.clipboard?.writeText(txt); tag.textContent='복사됨! ' + txt; };
+      console.log('[hotspot]', txt);
     });
-
-}
+  }
 
   const sec = box.closest('section');
   if (window.gsap && window.ScrollTrigger) {
