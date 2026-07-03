@@ -417,8 +417,8 @@ const PROJECTS = [
   subtitle:"마하 3 초음속 흡입구 공력 설계. 총 편향각 25° 제약에서 단일·이중·삼중 쐐기를 비교하고, pyBaram CFD로 전압력 회복률 향상을 검증했다.",
   layout:"media",
   bigMedia:[
-    { type:"image", src:"", cap:"마하수 컨투어 (pyBaram CFD)" },
-    { type:"image", src:"", cap:"쐐기 형상 비교 — 단일/이중/삼중" },
+    { type:"image", src:"assets/images/FP_01.png", cap:"마하수 변화 — 단일/이중/삼중" },
+    { type:"image", src:"assets/images/FP_02.png", cap:"전압력 회복률 비교 — 단일/이중/삼중" },
   ],
   specs:[
     { cat:"설계 조건" },
@@ -428,12 +428,12 @@ const PROJECTS = [
     { cat:"해석" },
     { k:"CFD 솔버", v:"pyBaram (압축성)" },
     { k:"격자 생성", v:"Gmsh" },
-    { k:"검증 결과", v:"단수↑ → 회복률↑ 재현" },
+    { k:"검증 결과", v:"단수↑ → 회복률↑ 재현 (3단일 때 전압력 회복률 54%, 질량유량 96%)" },
   ],
   latex:{ label:"경사충격파 θ-β-M 관계", tex:"\\tan\\delta=2\\cot\\beta\\,\\frac{M_1^2\\sin^2\\beta-1}{M_1^2(\\gamma+\\cos 2\\beta)+2}" },
   media:[
-    { type:"image", src:"", cap:"마하수 컨투어 (CFD)" },
-    { type:"image", src:"", cap:"쐐기 단수별 회복률 비교" },
+    { type:"image", src:"assets/images/FP_03.png", cap:"Qualitative pictures of flow through oblique shock" },
+    { type:"image", src:"assets/images/FP_04.png", cap:"Theta-beta-M relationship" },
   ],
 },
 ];
