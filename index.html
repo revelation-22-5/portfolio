@@ -149,7 +149,7 @@ section{border-bottom:1px solid var(--line)}
   font-family:var(--font-mono);font-size:10px;color:var(--viewer-sub);letter-spacing:.08em;line-height:1.9;
 }
 .viewer .vhud .k{color:var(--viewer-accent)}
-.viewer .vctrl{position:absolute;bottom:14px;left:16px;display:flex;gap:6px}
+.viewer .vctrl{position:absolute;bottom:14px;right:16px;display:flex;gap:6px}
 .viewer .vctrl button{
   font-family:var(--font-mono);font-size:10.5px;color:var(--viewer-sub);
   background:rgba(255,255,255,.04);border:1px solid var(--viewer-line);border-radius:6px;
@@ -182,7 +182,7 @@ section{border-bottom:1px solid var(--line)}
 
 /* 핫스팟 상세 카드 ── C안: 어두운 카드 ── */
 .hs-card{
-  position:absolute;right:14px;bottom:14px;width:min(320px,72%);
+  position:absolute;left:14px;bottom:14px;width:min(320px,72%);
   background:rgba(28,33,40,.92);border:1px solid var(--viewer-line);border-radius:12px;
   padding:16px 18px;z-index:8;box-shadow:0 12px 30px rgba(0,0,0,.35);backdrop-filter:blur(6px);
   opacity:0;transform:translateY(8px);pointer-events:none;transition:.28s;
@@ -234,7 +234,7 @@ table.spec td.v .num{color:var(--txt)}
   position:relative;background:var(--bg);
 }
 .mitem.wide{grid-column:1/3;aspect-ratio:16/8.4}
-.mitem img,.mitem iframe{width:100%;height:100%;object-fit:cover;border:none;display:block}
+.mitem img,.mitem iframe,.mitem video{width:100%;height:100%;object-fit:cover;border:none;display:block}
 .mitem .cap{
   position:absolute;left:0;right:0;bottom:0;padding:8px 10px 7px;
   font-family:var(--font-mono);font-size:9.5px;letter-spacing:.05em;color:#fff;
@@ -331,9 +331,18 @@ table.spec td.v .num{color:var(--txt)}
    · modelRoll  : 좌우로 굴리기
    값 안 맞으면 이 세 개를 1.57 / -1.57 / 3.14 / 0 조합으로 바꿔보며 맞춤.
    · cam        : 카메라 위치 [x,y,z] 수동지정. 안 쓰면 자동으로 꽉 차게 배치.
+   ── media / bigMedia 항목 3종 ──
+   · 이미지·GIF : { type:"image",   src:"assets/images/x.jpg", cap:"캡션" }
+   · MP4 자동재생: { type:"video",   src:"assets/videos/x.mp4", cap:"캡션" }
+                  (GIF 대신 권장 — 소리없이 자동 반복, 고화질·가벼움)
+   · 유튜브      : { type:"youtube", id:"영상ID", cap:"캡션" }
    ================================================================ */
 const SITE = {
   name: "임재훈",
+  /* ★ 핫스팟 좌표 찍기 도우미: 켜려면 true.
+     true면 뷰어에서 모델 표면을 클릭 → 그 지점의 pos:[x,y,z]가 화면에 뜸 → 복사해서 hotspots에 사용.
+     좌표 다 찍었으면 다시 false로 꺼두기. */
+  hotspotHelper: false,
   heroTitle: ["Mechanical", "Design", "Portfolio"],
   tagline: "발사대 GSE부터 초음속 흡입구까지 — CATIA 설계와 수치 검증으로 완성한 7개의 프로젝트.",
   heroVideos: [
@@ -354,7 +363,7 @@ const PROJECTS = [
 {
   id:"spmt", no:"01", title:"SPMT",
   subtitle:"발사체·TE·ECS 총 71.8t을 24륜으로 분담해 옮기는 자주식 모듈 운반차. 다축 분담과 대형 타이어로 접지압을 낮춰 발사장 포장면을 보호한다.",
-  glb:"assets/models/SPMT-v6-v1.glb", modelYaw:0.5, modelPitch:1.57, modelRoll:0,
+  glb:"assets/models/SPMT-v6-v1.glb", modelYaw:0.5, modelPitch:-1.57, modelRoll:0,
   hotspots:[
     { pos:[0,0.55,0.6], t:"적재 플랫폼", d:"TE·발사체·ECS를 통합 적재. 2대 1조 운용으로 하중을 절반씩 분담한다.", s:[["분담하중","352 kN"],["구성","2대 × 6축"]] },
     { pos:[0.7,-0.45,0.55], t:"타이어 (⌀1.39 m)", d:"대형 타이어의 넓은 접지면으로 지면 압력을 낮춰 노면을 보호한다.", s:[["륜하중","3.0 t"],["접지압","163 kPa"]] },
@@ -376,7 +385,7 @@ const PROJECTS = [
 {
   id:"erector", no:"02", title:"Erector",
   subtitle:"발사체를 수평에서 수직으로 세우는 기립 장치. ⌀300mm 유압 실린더와 3단 텔레스코픽 구조로 0°→90° 기립을 구현했다.",
-  glb:"assets/models/Erector-v4.glb", modelYaw:0.4, modelPitch:1.57, modelRoll:0,
+  glb:"assets/models/Erector-v4.glb", modelYaw:0.4, modelPitch:-1.57, modelRoll:0,
   hotspots:[
     { pos:[0,1.0,0.5], t:"3단 텔레스코픽 스테이지", d:"신장 시 총 14.3m 스트로크를 만들어내는 다단 구조.", s:[["총 스트로크","14.3 m"],["구성","3단"]] },
     { pos:[0.5,0,0.5], t:"유압 실린더", d:"기립 구동의 핵심. 힌지 모멘트를 감당하는 추력을 발생시킨다.", s:[["보어","⌀300 mm"],["기립각","0→90°"]] },
@@ -399,7 +408,7 @@ const PROJECTS = [
 {
   id:"te", no:"03", title:"Transporter Erector",
   subtitle:"Falcon 9 Block 5 건조질량 기준으로 설계 허용하중을 산정하고, ANSYS 위상 최적화로 트러스 토폴로지를 검증한 발사체 지지 구조물.",
-  glb:"assets/models/TE-v7.glb", modelYaw:0.4, modelPitch:1.57, modelRoll:0,
+  glb:"assets/models/TE-v7.glb", modelYaw:0.4, modelPitch:-1.57, modelRoll:0,
   hotspots:[
     { pos:[0,0.8,0.5], t:"트러스 구조", d:"위상 최적화(Minimize Compliance, 질량 30~40% 제약) 결과를 Antares TEL 트러스와 교차 검증.", s:[["기법","Topology Opt."],["툴","ANSYS"]] },
     { pos:[0,-0.5,0.6], t:"새들 지지부", d:"발사체 동체를 받치는 접촉부. 허용하중 기준으로 반력을 검증했다.", s:[["허용하중","565 kN"],["SF","2.0"]] },
@@ -421,7 +430,7 @@ const PROJECTS = [
 {
   id:"afp", no:"04", title:"AFP Head",
   subtitle:"KUKA KR210 기반 6축 로봇암과 싱글 토우 AFP 헤드. 6개 유닛의 유기적 구성으로 TPS 패널 프리프레그를 ±0.05mm 정밀도로 적층한다.",
-  glb:"assets/models/AFP_Robot-v1.glb", modelYaw:0.6, modelPitch:1.57, modelRoll:0,
+  glb:"assets/models/AFP_Robot-v1.glb", modelYaw:0.6, modelPitch:-1.57, modelRoll:0,
   hotspots:[
     { pos:[0,0.7,0.5], t:"Tension Control Unit", d:"PID 폐루프 제어로 적층 장력을 실시간 유지. 리니어 포텐셔미터 + 자기 분말 브레이크.", s:[["제어","PID 폐루프"],["역할","장력 유지"]] },
     { pos:[0.5,-0.2,0.5], t:"Heating + Compaction", d:"레이저 열원으로 닙 포인트를 국소 가열하고 압착 롤러로 물리적 압착.", s:[["열원","Laser"],["방식","In-situ"]] },
@@ -444,7 +453,7 @@ const PROJECTS = [
 {
   id:"conveyor", no:"05", title:"Conveyor Belt",
   subtitle:"TPS 패널 라인의 이송 축. 롤러 Revolute Joint 회전으로 벨트 이송을 구현하고, 랙앤피니언 진공 패킹 부스와 흡착 로봇암으로 AMR에 인계한다.",
-  glb:"assets/models/Convey-v2.glb", modelYaw:0.3, modelPitch:1.57, modelRoll:0,
+  glb:"assets/models/Convey-v2.glb", modelYaw:0.3, modelPitch:-1.57, modelRoll:0,
   hotspots:[
     { pos:[0.6,0.2,0.5], t:"구동 롤러", d:"Revolute Joint 회전으로 벨트 이송을 표현. 나선형 프로젝션으로 회전을 시각화.", s:[["조인트","Revolute"],["표현","나선 마킹"]] },
     { pos:[-0.5,0.3,0.5], t:"진공 패킹 부스", d:"랙앤피니언 도어의 상하 개폐 Kinematics를 구현.", s:[["도어","Rack&Pinion"],["기능","진공 패킹"]] },
@@ -465,7 +474,7 @@ const PROJECTS = [
 {
   id:"ptc", no:"06", title:"PTC",
   subtitle:"※ 이 섹션의 소개·제원은 선생님이 채워야 합니다 — CONFIG의 ptc 항목을 수정하세요.",
-  glb:"assets/models/PTC-v5.glb", modelYaw:0.4, modelPitch:1.57, modelRoll:0,
+  glb:"assets/models/PTC-v5.glb", modelYaw:0.4, modelPitch:-1.57, modelRoll:0,
   hotspots:[
     { pos:[0,0.5,0.5], t:"핫스팟 예시", d:"CONFIG에서 pos 좌표와 설명을 채우세요.", s:[["항목","값"],["항목","값"]] },
   ],
@@ -511,6 +520,9 @@ function mItem(m, extraCls=''){
   if(m.type==='youtube') return `<div class="mitem${extraCls}">${m.id
     ? `<iframe src="https://www.youtube.com/embed/${m.id}" allowfullscreen loading="lazy"></iframe>`
     : `<div class="ph">YOUTUBE ID를<br>CONFIG에 입력</div>`}<div class="cap">${m.cap}</div></div>`;
+  if(m.type==='video') return `<div class="mitem${extraCls}">${m.src
+    ? `<video src="${m.src}" autoplay loop muted playsinline preload="metadata"></video>`
+    : `<div class="ph">영상(MP4) 경로를<br>CONFIG에 입력</div>`}<div class="cap">${m.cap}</div></div>`;
   return `<div class="mitem${extraCls}">${m.src
     ? `<img src="${m.src}" alt="${m.cap}" loading="lazy">`
     : `<div class="ph">이미지 경로를<br>CONFIG에 입력</div>`}<div class="cap">${m.cap}</div></div>`;
@@ -779,6 +791,31 @@ function initViewer(box, proj){
   card.querySelector('.cx').addEventListener('click', ()=>{
     card.classList.remove('show'); V.hsEls.forEach(o=>o.e.classList.remove('on'));
   });
+
+  /* ★ 핫스팟 좌표 도우미 (SITE.hotspotHelper === true 일 때만) */
+  if (SITE.hotspotHelper) {
+    const rc = new THREE.Raycaster(), m2 = new THREE.Vector2();
+    const tag = el('div','', '클릭: 좌표 찍기');
+    tag.style.cssText = 'position:absolute;top:14px;right:14px;z-index:20;font:12px/1.5 monospace;'
+      +'background:#ffcc00;color:#111;padding:8px 10px;border-radius:8px;max-width:70%;cursor:pointer';
+    box.appendChild(tag);
+    ren.domElement.style.cursor = 'crosshair';
+    ren.domElement.addEventListener('click', (ev)=>{
+      const r = ren.domElement.getBoundingClientRect();
+      m2.x = ((ev.clientX-r.left)/r.width)*2-1;
+      m2.y = -((ev.clientY-r.top)/r.height)*2+1;
+      rc.setFromCamera(m2, cam);
+      const hit = rc.intersectObject(pivot, true)[0];
+      if(!hit){ tag.textContent='빈 곳 — 모델 표면을 클릭'; return; }
+      // 월드 좌표를 pivot 로컬로 변환 (CONFIG의 pos와 같은 좌표계)
+      const p = pivot.worldToLocal(hit.point.clone());
+      const s = v=>Math.round(v*100)/100;
+      const txt = `pos:[${s(p.x)}, ${s(p.y)}, ${s(p.z)}]`;
+      tag.textContent = txt + '  (클릭하면 복사)';
+      tag.onclick = ()=>{ navigator.clipboard?.writeText(txt); tag.textContent='복사됨! ' + txt; };
+      console.log('[hotspot]', txt);
+    });
+  }
 
   const sec = box.closest('section');
   if (window.gsap && window.ScrollTrigger) {
